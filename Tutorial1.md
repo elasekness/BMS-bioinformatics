@@ -23,7 +23,7 @@ that you specify. Sometimes specifying a command is all we need.
 
 Examine the contents of your directory with:
  
-`ls`
+	ls
 
  > **`ls`** = list
 
@@ -38,7 +38,7 @@ you would specify the path by stringing together the directory names, separated 
 
 First, determine the name and location of your home directory.
 
-`echo $HOME`
+	echo $HOME
 
 > **`echo`** = repeat, **`$HOME`** = variable name for your home directory and its location on the server.
 > Try the `echo` command with other variable names, such as **`$SHELL`** or **`$PATH`**.
@@ -47,7 +47,7 @@ First, determine the name and location of your home directory.
 
 You can also print your working directory (where you are).
  
-`pwd`
+	pwd
 
 > **`pwd`** = print working directory
 
@@ -55,7 +55,7 @@ You can also print your working directory (where you are).
 
 Make a directory within your home directory called `genomes`.
 
-`mkdir genomes`
+	mkdir genomes
 
 > **`mkdir`** = make directory
 
@@ -63,7 +63,7 @@ Make a directory within your home directory called `genomes`.
 
 Change (move) to a different directory.
 
-`cd genomes`
+	cd genomes
 
 > **`cd`** = change directory. Use **`../`** or **`..`** to move up one directory (back to your home directory). What does **`cd`** alone do?
 
@@ -80,7 +80,7 @@ and 3) Others (Everyone else in the world).
 
 Examine the permissions of your 'genomes' directory.
 
-`ls -l genomes`
+	ls -l genomes
 
 > **`ls -l`** = long list, providing you information on when the **`genomes`** directory was created and its associated permissions.
 
@@ -88,7 +88,7 @@ Examine the permissions of your 'genomes' directory.
 
 Change the permissions associated with your `genomes` directory with the 'chmod' command (change mode).
 
-`chmod 775 genomes`
+	chmod 775 genomes
 
 > Permissions are represented by three-digit (for user, group, and other) octal numbers.
 > Here we are allowing the user and group universal permissions (7 = read, write, and execute) and all others
@@ -110,7 +110,7 @@ format you want it. Or that you are using the correct file and format for downst
 
 Redirect STDOUT to a file.
 
-`ls /usr/bin > programs.txt`
+	ls /usr/bin > programs.txt
 
 > The path **`/usr/bin`** specifies the location where various Bash commands are found. When you type a command, **`/usr/bin`** is one of the locations
 > your computer searches to find and execute the command. Was **`/usr/bin`** part of your **`$PATH`**?
@@ -120,7 +120,7 @@ Redirect STDOUT to a file.
 
 Scroll through the contents of your file.
 
-`more programs.txt`
+	more programs.txt
 
 > Scroll through line-by-line with the enter key.  Scroll through page-by-page with the space key.
 > Do you notice that the file contains some of the commands you have just used?
@@ -130,7 +130,7 @@ Scroll through the contents of your file.
 
 Display the first ten lines of your file.
 
-`head programs.txt`
+	head programs.txt
 
 > **`head`** displays the first ten lines by default but you can specify the number of lines with a flag.
 > For example, **`head -200 programs.txt`** will display the first two hundred lines of your file. In general, most
@@ -141,14 +141,14 @@ Display the first ten lines of your file.
 
 Display the last ten lines of your file.
 
-`tail programs.txt`
+	tail programs.txt
 
 <br>
 
 Print the entire contents of your file to your screen.
 
 
-`cat programs.txt`
+	cat programs.txt
 
 > **`cat`** = concatenate.  The **`cat`** command can also join the contents of multiple files together.
 
@@ -157,7 +157,7 @@ Print the entire contents of your file to your screen.
 Make and view the contents of a file with a text editor.
 
 
-`nano new_file.txt`
+	nano new_file.txt
 
 > Nano, emacs, vim, and vi are all text editors.
 > You can make an empty file on the fly as we did here.  This will open a blank text editor screen.
@@ -169,7 +169,7 @@ Make and view the contents of a file with a text editor.
 
 Rename a file.
 
-`mv programs.txt installed_programs.txt`
+	mv programs.txt installed_programs.txt
 
 > **`mv`** = move. Renaming files with `mv` will overwrite any existing file.  You can also mv a file to a different directory.  
 > Try it: **`mv installed_programs.txt genomes`**
@@ -179,7 +179,7 @@ Rename a file.
 
 Copy a file.
 
-`cp installed_programs.txt duplicate.txt`
+	cp installed_programs.txt duplicate.txt
 
 > **`cp`** = copy. Can you copy a file to a different directory in one command?
 
@@ -187,7 +187,7 @@ Copy a file.
 
 Remove a file.
 
-`rm duplicate.txt`
+	rm duplicate.txt
 
 > **`rm`** = remove.  Remember, a removed file cannot be restored.  
 > Can you remove a file from a different directory without having to change directories? 
@@ -250,7 +250,7 @@ Right click on the fna file and 'Get info.' The information page will list the f
 
 Copy the server information and type the following command in your VM terminal:
 
-`curl -O "ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/009/858/895/GCF_009858895.2_ASM985889v3/GCF_009858895.2_ASM985889v3_genomic.fna.gz"`
+	curl -O "ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/009/858/895/GCF_009858895.2_ASM985889v3/GCF_009858895.2_ASM985889v3_genomic.fna.gz"
 
 > The **`-O`** option saves the copied contents to a file named as it was on the FTP site.
 > Repeat this for the gff and faa files
@@ -280,8 +280,8 @@ We could download the two fastq files using the NCBI link provided or we could u
 
 Use **`prefetch`** and **`fasterq-dump`** tools from the SRA toolkit to download the Wuhan-1 fastq files.
 
-`prefetch SRR10971381`
-`fasterq-dump SRR10971381`
+	prefetch SRR10971381
+	fasterq-dump SRR10971381
 
 > **`prefetch`** will download the SRA data in binary format and **`fasterq-dump`** will perform the fastq conversion.
 > Notice that the conversion tool automatically saves forward and reverse reads to separate files.
@@ -314,7 +314,7 @@ Sometimes the most challenging bioinformatics operations are wrangling your data
 Decompress your files.
 
 
-`gzip -d GCF_009858895.2_ASM985889v3_genomic.fna.gz`
+	gzip -d GCF_009858895.2_ASM985889v3_genomic.fna.gz
 
 
 > Although we are decompressing our files here, many of the programs we will employ can work with compressed files, which saves time and space.
@@ -324,7 +324,7 @@ Decompress your files.
 Use a 'for loop' to decompress all of your files at once:
 
 
-`for filn in *gz; do gzip -d $filn; done`
+	for filn in *gz; do gzip -d $filn; done
 
 
 > Here we used a for loop and the greedy metacharacter, **`*`**.  We'll cover both in more detail late. In brief, for loops help us
@@ -341,7 +341,7 @@ Use a 'for loop' to decompress all of your files at once:
 Count how many coding sequences are present in your faa file.
 
 
-`grep -c GCF_009858895.2_ASM985889v3_protein.faa`
+	grep -c GCF_009858895.2_ASM985889v3_protein.faa
 
 > **`grep`** = global regular expression print.  Grep searches a file line-by-line for patterns that you specify and returns every line containing that pattern.
 > The **`-c`** option counts the number of lines that contain the search pattern instead of returning the lines.
@@ -353,7 +353,7 @@ Count how many coding sequences are present in your faa file.
 Grab the first 5 header lines from your faa file with grep and a pipe.
 
 
-`grep  GCF_009858895.2_ASM985889v3_protein.faa | head -5 `
+	grep  GCF_009858895.2_ASM985889v3_protein.faa | head -5
 
 > Here we are using a pipe, designated by **`|`** to pass the capture the output of grep and pass it to another command (**`head`**).
 > Piping is a really useful skill to learn for parsing and processing data more efficiently.
@@ -365,7 +365,7 @@ Grab the first 5 header lines from your faa file with grep and a pipe.
 Use **`sed`** to rename the definition lines of your faa file.
 
 
-`sed 's/YP.*\.[0-9] /Wuhan-1 /' GCF_009858895.2_ASM985889v3_protein.faa`
+	sed 's/YP.*\.[0-9] /Wuhan-1 /' GCF_009858895.2_ASM985889v3_protein.faa
 
 > **`sed`** = stream editor.  **`sed`** is essentially a search and replace function.
 > Like **`grep`**, we can search for and replace complicated patterns when we use this command with regular expressions.
@@ -398,7 +398,7 @@ our screen, making it difficult to visualize.
 Extract all coding sequences (CDS) and view their start and stop positions with a combination of 'grep' and 'cut.'
 
 
-`grep "CDS" GCF_009858895.2_ASM985889v3_genomic.gff | cut -f 3,4,5`
+	grep "CDS" GCF_009858895.2_ASM985889v3_genomic.gff | cut -f 3,4,5
 
 > We have searched for every line that contains **`CDS`** and cut those lines on the third, fourth, and fifth delimiters (delimiters can be anything but the default is a tab).
 > Essentially, we have extracted the information in the third, fourth, and fifth fields of each line that contained **`CDS`**.
@@ -409,7 +409,7 @@ Extract all coding sequences (CDS) and view their start and stop positions with 
 Extract only exact matches to **`CDS`** in the third field of the gff file and print the 3rd-5th fields to STDOUT
 
 
-`cut -f 3,4,5 GCF_009858895.2_ASM985889v3_genomic.gff | grep "CDS" | grep -v "mature"`
+	cut -f 3,4,5 GCF_009858895.2_ASM985889v3_genomic.gff | grep "CDS" | grep -v "mature"
 
 > What does the '-v' argument specify in the **`grep`** command? What is another approach to getting the same results?
 
@@ -418,7 +418,7 @@ Extract only exact matches to **`CDS`** in the third field of the gff file and p
 
 Count the number of occurrences of **`CDS`** there are in the third field of the gff file
 
-`cut -f 3 GCF_009858895.2_ASM985889v3_genomic.gff | grep "CDS" | sort | uniq -c`
+	cut -f 3 GCF_009858895.2_ASM985889v3_genomic.gff | grep "CDS" | sort | uniq -c
 
 > **`sort`** sorts lines alpha-numerically (by default, this can be changed) and **`uniq -c`** counts the number of times each unique pattern occurs.
 > Note that the lines must be sorted in order for **`uniq -c`** to work properly.
@@ -436,7 +436,7 @@ I can run a for loop that will open each fasta file and make the changes that I 
 
 The basic syntax is:
 
-`for FILE in *common_file_ending; do command $FILE; done`
+	for FILE in *common_file_ending; do command $FILE; done
 
 > The interpretation of this code is:
 > For every file that ends in some common ending (such as .txt or .gz), perform (do) some command on that file until there are no more files on which to operate,
