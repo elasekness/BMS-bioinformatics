@@ -1,6 +1,8 @@
 ## Tutorial 1
+<br>
 
 **Objective:** Successfully log on to Google Cloud Platform (GCP) Console and become familiar with working in a command-line (Linux) environment.
+
 <br>
 
 ## Opening a terminal window
@@ -192,7 +194,7 @@ Remove a file.
 > Can you remove a file from a different directory without having to change directories? 
 > How would you remove a directory?
 
-
+<br>
 
 ## Notes on working in a Linux environment
 
@@ -207,7 +209,7 @@ For example, if I had only one file in my directory that began with a “b,” I
 Try `which` to see if the command is in your path – whether the command is in a location that the computer searches for executing commands.
 * Hit the up-arrow key to recall a command you entered previously.
 
-
+<br>
 
 ## Databases and obtaining sequences
 
@@ -254,7 +256,7 @@ Copy the server information and type the following command in your VM terminal:
 > The **`-O`** option saves the copied contents to a file named as it was on the FTP site.
 > Repeat this for the gff and faa files
 
-
+<br>
 
 ## Obtaining reads from the SRA
 
@@ -276,7 +278,7 @@ Notice this is a metatranscriptome, meaning this may not be a pure isolate of a 
 SRA submission).  The sequencing was performed on an Illumina MiniSeq and the reads are paired (i.e. there are Forward and Reverse reads for the same amplicon).
 We could download the two fastq files using the NCBI link provided or we could use faster tools provided by NCBI.
 
-
+<br>
 
 Use **`prefetch`** and **`fasterq-dump`** tools from the SRA toolkit to download the Wuhan-1 fastq files.
 
