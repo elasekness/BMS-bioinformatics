@@ -55,7 +55,7 @@ To SSH you need an account on the server with a username and password as well as
 <li> Once connected to the console, click the Compute Engine link and start your VM by expanding the three dot icon to the right </li>
 <li> Click the SSH button once the VM has started. This will open a terminal window on your VM.</li>
 <p>To perform any operations in a Linux environment, we need to tell the computer what to do by typing specific commands into our terminal window.
-In general, the syntax will be: <span style='color:blue'>Command</span> <span style='color:red'>File</span>,
+In general, the syntax will be: <code><span style='color:blue'>Command</span> <span style='color:red'>File</span></code>,
 where <span style='color:blue'>Command</span> is the function you want to perform on the <span style='color:red'>File</span> or <span style='color:red'>Directory</span>
 that you specify. Sometimes specifying a command is all we need.</p>
 
@@ -64,7 +64,7 @@ that you specify. Sometimes specifying a command is all we need.</p>
 <pre class="code">
 <span style='color:blue'>ls</span>
 </pre>
-ls = list
+<code>ls</code> = list
 </blockquote>
 <br>
 
@@ -82,8 +82,8 @@ you would specify the path by stringing together the directory names, separated 
 <pre class="code">
 <span style='color:blue'>echo</span> <span style='color:black'>$HOME</span>
 </pre>
-<p>echo = repeat, $HOME = variable name for your home directory and its location on the server.
-Try the echo command with other variable names, such as $SHELL or $PATH.</p>
+<p><code>echo</code> = repeat, <code>$HOME</code> = variable name for your home directory and its location on the server.
+Try the <code>echo</code> command with other variable names, such as <code>$SHELL</code> or <code>$PATH</code>.</p>
 </blockquote>
 <br>
 
@@ -92,7 +92,7 @@ Try the echo command with other variable names, such as $SHELL or $PATH.</p>
 <pre class="code">
 <span style='color:blue'>pwd</span>
 </pre>
-<p>pwd = print working directory</p>
+<p><code>pwd</code> = print working directory</p>
 </blockquote>
 <br>
 
@@ -101,7 +101,7 @@ Try the echo command with other variable names, such as $SHELL or $PATH.</p>
 <pre class="code">
 <span style='color:blue'>mkdir</span> <span style='color:red'>genomes</span>
 </pre>
-<p>mkdir = make directory</p>
+<p><code>mkdir</code> = make directory</p>
 </blockquote>
 <br>
 
@@ -110,7 +110,7 @@ Try the echo command with other variable names, such as $SHELL or $PATH.</p>
 <pre class="code">
 <span style='color:blue'>cd</span> <span style='color:red'>genomes</span>
 </pre>
-<p>cd = change directory. Use "../" or ".." to move up one directory (back to your home directory). What does "cd" alone do?</p>
+<p><code>cd</code> = change directory. Use <code>../</code> or <code>..</code> to move up one directory (back to your home directory). What does <code>cd</code> alone do?</p>
 </blockquote>
 <br>
 
@@ -129,7 +129,7 @@ and 3) Others (Everyone else in the world).<p>
 <pre class="code">
 <span style='color:blue'>ls -l</span> <span style='color:red'>genomes</span>
 </pre>
-<p>ls -l = long list, providing you information on when the 'genomes' directory was created and its associated permissions.</p>
+<p><code>ls -l</code> = long list, providing you information on when the <code>genomes</code> directory was created and its associated permissions.</p>
 </blockquote>
 <br>
 
@@ -162,9 +162,9 @@ format you want it. Or that you are using the correct file and format for downst
 <pre class="code">
 <span style='color:blue'>ls</span> <span style='color:red'>/usr/bin</span> > programs.txt
 </pre>
-<p>The path /usr/bin specifies the location where various Bash commands are found. When you type a command, '/usr/bin' is one of the locations
-your computer searches to find and execute the command. Was '/usr/bin' part of your $PATH?
-Here we are redirecting the STDOUT from the 'ls' command to a file named “programs.txt." The '>' sign is responsible for the redirection. </p>
+<p>The path <code>/usr/bin</code> specifies the location where various Bash commands are found. When you type a command, <code>/usr/bin</code> is one of the locations
+your computer searches to find and execute the command. Was <code>/usr/bin</code> part of your <code>$PATH</code>?
+Here we are redirecting the STDOUT from the <code>ls</code> command to a file named 'programs.txt.' The '>' sign is responsible for the redirection. </p>
 </blockquote>
 <br>
 
@@ -175,7 +175,7 @@ Here we are redirecting the STDOUT from the 'ls' command to a file named “prog
 </pre>
 <p>Scroll through line-by-line with the enter key.  Scroll through page-by-page with the space key.
 Do you notice that the file contains some of the commands you have just used?</p>
-Exit with control-c.
+Exit with <code>control-c</code>.
 </blockquote>
 <br>
 
@@ -185,9 +185,9 @@ Exit with control-c.
 <span style='color:blue'>head</span> <span style='color:red'>programs.txt</span>
 </pre>
 <p>Head displays the first ten lines by default but you can specify the number of lines with a flag.
-For example, 'head -200 programs.txt' will display the first two hundred lines of your file. In general, most
+For example, <code>head -200 programs.txt</code> will display the first two hundred lines of your file. In general, most
 commands have additional arguments (or flags) associated with them. You can see the different usage statements
-by typing the command with a '-help' or '--help' option.</p>
+by typing the command with a <code>-help</code> or <code>--help</code> option.</p>
 </blockquote>
 <br>
 
@@ -204,7 +204,7 @@ by typing the command with a '-help' or '--help' option.</p>
 <pre class="code">
 <span style='color:blue'>cat</span> <span style='color:red'>programs.txt</span>
 </pre>
-<p>cat = concatenate.  The 'cat' command can also join the contents of multiple files together.</p>
+<p><code>cat</code> = concatenate.  The <code>cat</code> command can also join the contents of multiple files together.</p>
 </blockquote>
 <br>
 
@@ -215,7 +215,7 @@ by typing the command with a '-help' or '--help' option.</p>
 </pre>
 <p>Nano, emacs, vim, and vi are all text editors.
 You can make an empty file on the fly as we did here.  This will open a blank text editor screen.
-Type some content and save it with 'control-o.' To exit the text editor, use 'control-x.'</p>
+Type some content and save it with <code>control-o</code>. To exit the text editor, use <code>control-x</code>.</p>
 <p> More information on Nano commands can be found here: <a style='color:blue' href='https://www.howtogeek.com/howto/42980/the-beginners-guide-to-nano-the-linux-command-line-text-editor/'>Nano</a></p>
 </blockquote>
 <br>
@@ -225,8 +225,8 @@ Type some content and save it with 'control-o.' To exit the text editor, use 'co
 <pre class="code">
 <span style='color:blue'>mv</span> <span style='color:red'>programs.txt installed_programs.txt</span>
 </pre>
-<p>mv = move. Renaming files with 'mv' will overwrite any existing file.  You can also mv a file
-to a different directory.  Try it: 'mv installed_programs.txt genomes' Can you move the file back to your home directory?</p>
+<p><code>mv</code> = move. Renaming files with <code>mv</code> will overwrite any existing file.  You can also mv a file
+to a different directory.  Try it: <code>mv installed_programs.txt genomes</code> Can you move the file back to your home directory?</p>
 </blockquote>
 <br>
 
@@ -235,7 +235,7 @@ to a different directory.  Try it: 'mv installed_programs.txt genomes' Can you m
 <pre class="code">
 <span style='color:blue'>cp</span> <span style='color:red'>installed_programs.txt duplicate.txt</span>
 </pre>
-<p>cp = copy. Can you copy a file to a different directory in one command? </p>
+<p><code>cp</code> = copy. Can you copy a file to a different directory in one command? </p>
 </blockquote>
 <br>
 
@@ -244,7 +244,7 @@ to a different directory.  Try it: 'mv installed_programs.txt genomes' Can you m
 <pre class="code">
 <span style='color:blue'>rm</span> <span style='color:red'>duplicate.txt</span>
 </pre>
-<p>rm = remove.  Remember, a removed file cannot be restored.  Can you remove
+<p><code>rm</code> = remove.  Remember, a removed file cannot be restored.  Can you remove
 a file from a different directory without having to change directories? How would you remove a directory?</p>
 </blockquote>
 <br>
