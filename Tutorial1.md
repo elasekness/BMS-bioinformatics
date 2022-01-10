@@ -21,9 +21,9 @@ where `Command` is the function you want to perform on the` File` or `Directory`
 that you specify. Sometimes specifying a command is all we need.
 
 -Examine the contents of your directory with:
-`ls`
+ `ls`
 
-`ls` = list
+ `ls` = list
 
 <br>
 
@@ -36,7 +36,7 @@ you would specify the path by stringing together the directory names, separated 
 
 - First, determine the name and location of your home directory.
 
-`echo $HOME`
+ `echo $HOME`
 
 `echo` = repeat, `$HOME` = variable name for your home directory and its location on the server.
 Try the `echo` command with other variable names, such as `$SHELL` or `$PATH`.
@@ -44,25 +44,26 @@ Try the `echo` command with other variable names, such as `$SHELL` or `$PATH`.
 <br>
 
 - You can also print your working directory (where you are).
-`pwd`
+ 
+ `pwd`
 
-`pwd` = print working directory
+ `pwd` = print working directory
 
 <br>
 
 - Make a directory within your home directory called `genomes`.
 
-`mkdir genomes`
+ `mkdir genomes`
 
-`mkdir` = make directory
+ `mkdir` = make directory
 
 <br>
 
 - Change (move) to a different directory.
 
-`cd genomes`
+ `cd genomes`
 
-`cd` = change directory. Use `../` or `..` to move up one directory (back to your home directory). What does `cd` alone do?
+ `cd` = change directory. Use `../` or `..` to move up one directory (back to your home directory). What does `cd` alone do?
 
 <br>
 
@@ -77,15 +78,15 @@ and 3) Others (Everyone else in the world).
 
 - Examine the permissions of your 'genomes' directory.
 
-`ls -l genomes`
+ `ls -l genomes`
 
-`ls -l` = long list, providing you information on when the `genomes` directory was created and its associated permissions.
+ `ls -l` = long list, providing you information on when the `genomes` directory was created and its associated permissions.
 
 <br>
 
 - Change the permissions associated with your `genomes` directory with the 'chmod' command (change mode).
 
-`chmod 775< genomes`
+ `chmod 775< genomes`
 
 Permissions are represented by three-digit (for user, group, and other) octal numbers.
 Here we are allowing the user and group universal permissions (7 = read, write, and execute) and all others
@@ -107,7 +108,7 @@ format you want it. Or that you are using the correct file and format for downst
 
 - Redirect STDOUT to a file.
 
-`ls /usr/bin > programs.txt`
+ `ls /usr/bin > programs.txt`
 
 The path `/usr/bin` specifies the location where various Bash commands are found. When you type a command, `/usr/bin` is one of the locations
 your computer searches to find and execute the command. Was `/usr/bin` part of your `$PATH`?
@@ -117,7 +118,7 @@ Here we are redirecting the STDOUT from the `ls` command to a file named `progra
 
 - Scroll through the contents of your file.
 
-`more programs.txt`
+ `more programs.txt`
 
 Scroll through line-by-line with the enter key.  Scroll through page-by-page with the space key.
 Do you notice that the file contains some of the commands you have just used?
@@ -127,7 +128,7 @@ Exit with `control-c`.
 
 - Display the first ten lines of your file.
 
-`head programs.txt`
+ `head programs.txt`
 
 `head` displays the first ten lines by default but you can specify the number of lines with a flag.
 For example, `head -200 programs.txt` will display the first two hundred lines of your file. In general, most
@@ -139,7 +140,7 @@ by typing the command with a `-help` or `--help` option.
 - Display the last ten lines of your file.
 
 
-`tail programs.txt`
+ `tail programs.txt`
 
 
 <br>
@@ -149,14 +150,14 @@ by typing the command with a `-help` or `--help` option.
 
 `cat programs.txt`
 
-`cat` = concatenate.  The `cat` command can also join the contents of multiple files together.
+ `cat` = concatenate.  The `cat` command can also join the contents of multiple files together.
 
 <br>
 
 - Make and view the contents of a file with a text editor.
 
 
-`nano new_file.txt`
+ `nano new_file.txt`
 
 Nano, emacs, vim, and vi are all text editors.
 You can make an empty file on the fly as we did here.  This will open a blank text editor screen.
@@ -168,10 +169,11 @@ Type some content and save it with `control-o`. To exit the text editor, use `co
 - Rename a file.
 
 
-`mv programs.txt installed_programs.txt`
+ `mv programs.txt installed_programs.txt`
 
 `mv` = move. Renaming files with `mv` will overwrite any existing file.  You can also mv a file
-to a different directory.  Try it: `mv installed_programs.txt genomes`
+to a different directory.  
+Try it: `mv installed_programs.txt genomes`
 Can you move the file back to your home directory?
 
 <br>
@@ -179,7 +181,7 @@ Can you move the file back to your home directory?
 - Copy a file.
 
 
-`cp installed_programs.txt duplicate.txt`
+ `cp installed_programs.txt duplicate.txt`
 
 <code>cp</code> = copy. Can you copy a file to a different directory in one command?
 
@@ -188,7 +190,7 @@ Can you move the file back to your home directory?
 - Remove a file.
 
 
-`rm duplicate.txt`
+ `rm duplicate.txt`
 
 <code>rm</code> = remove.  Remember, a removed file cannot be restored.  Can you remove
 a file from a different directory without having to change directories? How would you remove a directory?
