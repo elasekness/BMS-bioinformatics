@@ -99,5 +99,49 @@ In our case, we'll also be generating consensus genomes with iVAR
 
 <br>
 
+## Background information for SARS-CoV-2 cases under investigation
+<br>
+In early March 2020 of the pandemic, healthcare facilities struggled with outbreaks of COVID-19.
+Genomic epidemiology can assist investigations into the source of an outbreak, the timing of introduction
+of a pathogen into a population, and the number of introductions that have occurred into an area.
+Here we are using the information contained within SARS-CoV-2 genomes to assist a traditional epidemiological investigation
+into the nature of an outbreak in a Westchester healthcare facility. The are four samples from the facility: two
+from staff and two from residents, collected on the same day. A fifth sample is also from a healthcare facility collected four days after.
+While genomic epidemiology cannot confirm the individual source
+in this case, we want to know if the virus was transmitted within the facility and if all cases are a part of the same outbreak.
+Keep in mind that the mutation rate for SARS-CoV-2 is about 1 mutation every two weeks.  At the beginning of the pandemic,
+there was very little variation in SARS-CoV-2 genomes.  Thus, one unique mutation shared among several genomes that is not observed
+in a contextual set of genomes might provide support for a transmission link.  Conversely, it could be that there are many unsampled
+genomes, some of which also contain the unique mutation.
+
+<br>
+
+Each student will map the fastqs from one sample to the reference genome and generate a consensus genome for downstream analyses.
+
+## Sample assignment and metadata
+
+| Student | Collection date | Sample name | County | Healthcare facility |
+| ------- | --------------- | ----------- | ------ | ------------------- |
+| Kathleen McCarthy | 2020-03-15 | IDR2000016084 | Westchester | Yes, staff |
+| Kayla Simanek | 2020-03-15 | IDR2000016115 | Westchester | Yes, staff |
+| Nicholas Keegan | 2020-03-15 | IDR2000016158 | Westchester | Yes, resident |
+| Rachel Lange | 2020-03-15 | IDR2000016600 | Westchester | Yes, resident |
+| Sharon Shaughnessy | 2020-03-19 | IDR2000024179 | Westchester | Yes, resident |
+
+
+
+## Follow the general workflow outlined previously to process and map your reads and generate a consensus genome
+
+<br>
+
+* Use the gsutil copy command to copy the fastq files for your sample from our bucket to the terminal.
+
+Before we can copy to and from our bucket, we need to authenticate our accounts to GCP on the computer from which we are executing the gsutil commands.
+
+	`gcloud auth login`
+
+A crazy long URL is output. Copy the URL from the terminal window and paste it into a browser (preferably Chrome).
+The web page that is displayed will contain a long auth code. Copy the code and paste it back into the terminal window
+you executed the gcloud cmd in. press return and you should be authenticated to GCP. Some current state info will be output.
 
 
