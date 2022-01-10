@@ -296,4 +296,190 @@ Use **`prefetch`** and **`fasterq-dump`** tools from the SRA toolkit to download
 >
 > We'll discuss this command more in class but essentially, we are copying all files that start with GCF from our GCP bucket to our current directory `.` .
 
+<br>
+
+## Manipulating data: Parsing files, modifying content, and piping
+
+
+Often, we want to extract information from and/or alter the contents of a file.
+We might also want to determine some basic features of the file.
+For example, we might want to know how many sequences are in our fasta file without having to open and scroll through a file.
+You will probably use the following commands most frequently to parse and manipulate files – grep, sed, cut, paste, sort and uniq.
+These commands can perform simple routines such as search and replace but combined with regular expressions, these tools are incredibly powerful and efficient.
+Piping is specified by “|” and simply pipes the STDOUT from one command to another so that you can string multiple operations together on one line.
+Sometimes the most challenging bioinformatics operations are wrangling your data into the proper format.
+<br>
+
+
+Decompress your files.
+
+
+`gzip -d GCF_009858895.2_ASM985889v3_genomic.fna.gz`
+
+
+> Although we are decompressing our files here, many of the programs we will employ can work with compressed files, which saves time and space.
+
+<br>
+
+Use a 'for loop' to decompress all of your files at once:
+
+
+`for filn in *gz; do gzip -d $filn; done`
+
+
+> Here we used a for loop and the greedy metacharacter, **`*`**.  We'll cover both in more detail late. In brief, for loops help us
+> automate repetitive processes and the special **`*`** character represents any character any number of times.
+> For now, examine the contents of your files with **`head`**, **`tail`**, or **`more`**.
+> Fasta files have a Definition Line or Header, with the sequence name proceeded by a '>', followed by the sequence starting on the next line.
+> GFF files have a standard format as well with each field/column (separated by tabs), which contain specific information about the entry.
+> For example, the 4th and 5th fields of a gff file always contain the start and stop coordinates for the entry.
+> Each line contains information on an entry, such as a gene or coding sequence.
+
+<br>
+
+
+Count how many coding sequences are present in your faa file.
+
+
+`grep -c GCF_009858895.2_ASM985889v3_protein.faa`
+
+> **`grep`** = global regular expression print.  Grep searches a file line-by-line for patterns that you specify and returns every line containing that pattern.
+> The **`-c`** option counts the number of lines that contain the search pattern instead of returning the lines.
+> Try **`grep`** without the **`-c`** argument to see the difference.
+> Combined with metacharacters, **`grep`** is a powerful way to search your document for complicated patterns.
+
+<br>
+
+Grab the first 5 header lines from your faa file with grep and a pipe.
+
+
+`grep  GCF_009858895.2_ASM985889v3_protein.faa | head -5 `
+
+> Here we are using a pipe, designated by **`|`** to pass the capture the output of grep and pass it to another command (**`head`**).
+> Piping is a really useful skill to learn for parsing and processing data more efficiently.
+> Note that you can string many pipes together, if necessary. As is the case for most operations conducted in Linux, there are multiple ways to do things.
+> Use the manual page for grep to find an alternative way to obtain the first five header lines (**`man grep`**).
+
+<br>
+
+Use **`sed`** to rename the definition lines of your faa file.
+
+
+`sed 's/YP.*\.[0-9] /Wuhan-1 /' GCF_009858895.2_ASM985889v3_protein.faa`
+
+> **`sed`** = stream editor.  **`sed`** is essentially a search and replace function.
+> Like **`grep`**, we can search for and replace complicated patterns when we use this command with regular expressions.
+> The syntax for the search and replace command is **`'s/search pattern/replacement pattern/'`** where the 's' stands for substitute.
+>
+> In our example, the faa file contains definition lines that begin with the accession numbers of the proteins, all of which contain a 'YP_' followed by a unique number.
+> We can use regular expressions to replace all of these patterns without having to search for each unique accession number.
+> We are searching for all patterns that contain a YP followed by any character (represented by the metacharacter **`.`**) any number of times, followed by a period
+> (we must use a backslash in front of the period to specify a literal period and not a special character), followed by a single number with a range of 0-9
+> (brackets also have special meaning, specifying ranges of numbers, letters, or both), and a space.
+> Like **`grep`**, **`sed`** will search for your pattern line by line and make the replacement once (unless you specify otherwise, see the manual page).
+
+
+**`sed`** will print your entire document to STDOUT with the replacements made.
+
+* How can you view just the definition lines you have changed with a pipe?
+* What happens if you don't include the trailing space in your search pattern?
+* What happens if we make our search pattern less specific?
+* Try **`s/YP.* /Wuhan-1 /`** as the search and replace pattern. Did this work the way you expected?
+
+<br>
+
+
+## More piping
+
+Let's try some more complicated parsing of our data using various Bash commands and pipes. First, take a quick view of the gff file.  It's bulky and the lines don't fit on
+our screen, making it difficult to visualize.
+<br>
+
+Extract all coding sequences (CDS) and view their start and stop positions with a combination of 'grep' and 'cut.'
+
+
+`grep "CDS" <span style='color:red'>GCF_009858895.2_ASM985889v3_genomic.gff | cut -f 3,4,5`
+
+> We have searched for every line that contains **`CDS`** and cut those lines on the third, fourth, and fifth delimiters (delimiters can be anything but the default is a tab).
+> Essentially, we have extracted the information in the third, fourth, and fifth fields of each line that contained **`CDS`**.
+> This also highlights that **`grep`** is greedy - returning **`CDS`** if it is part of a larger phrase or word. If we want to be more specific we have a few options.
+
+<br>
+
+Extract only exact matches to **`CDS`** in the third field of the gff file and print the 3rd-5th fields to STDOUT
+
+
+`cut -f 3,4,5 GCF_009858895.2_ASM985889v3_genomic.gff | grep "CDS" | grep -v "mature"`
+
+> What does the '-v' argument specify in the **`grep`** command? What is another approach to getting the same results?
+
+<br>
+
+
+Count the number of occurrences of **`CDS`** there are in the third field of the gff file
+
+`cut -f 3 GCF_009858895.2_ASM985889v3_genomic.gff | grep "CDS" | sort | uniq -c`
+
+> **`sort`** sorts lines alpha-numerically (by default, this can be changed) and **`uniq -c`** counts the number of times each unique pattern occurs.
+> Note that the lines must be sorted in order for **`uniq -c`** to work properly.
+
+<br>
+
+
+## Bash for loops
+
+
+Bash for loops are basically little shell scripts that you are executing from the command line (Bash is a type of shell, and shells are basically
+little programs for interpreting your commands). Like all loops, they allow you to automate iterative processes.
+For example, instead of opening 200 hundred fasta files and manually changing the definition lines in each,
+I can run a for loop that will open each fasta file and make the changes that I specify.
+
+The basic syntax is:
+
+`for FILE in *common_file_ending; do command $FILE; done`
+
+> The interpretation of this code is:
+> For every file that ends in some common ending (such as .txt or .gz), perform (do) some command on that file until there are no more files on which to operate,
+> whereby “done” will exit us from the loop.
+> The $ in front of FILE indicates that $FILE is a variable, a placeholder which is referring to each file that enters the loop,
+> just as x is a variable that represents 2 in the equation x = 2.
+
+<br>
+
+
+## Regular expressions (regex) and special characters (metacharacters)
+
+Regular expressions are search terms that incorporate special characters to make searches more powerful (both broader and more specific).
+Metacharacters have a special meaning and include:
+
+- `*` 	Star is a greedy metacharacter meaning match anything any number of times
+- `[]` 	Brackets are often used to specify a range of numbers or letters to include in a search pattern
+- `.` 	A period represents any character once
+- `?` 	Match one character
+- `$`		End of Line
+- `^`		Beginning of line
+
+Usually, we escape special characters with a backslash to interpret them literally.
+
+
+
+## Some good references for additional clarification and practice:
+
+
+[Linux tutorial](http://www.ee.surrey.ac.uk/Teaching/Unix/)
+
+[Permissions](http://ryanstutorials.net/linuxtutorial/permissions.php)
+
+[Special characters list](http://docstore.mik.ua/orelly/unix/upt/ch08_19.htm)
+
+[Nano commands cheat sheet](http://www.codexpedia.com/text-editor/nano-text-editor-command-cheatsheet/)
+
+[Bioinformatics and NexGen tutorials](https://github.com/ngs-docs) **really helpful (particularly the ANGUS workshops)!**
+
+[Everything Unix (Linux)](https://docstore.mik.ua/orelly/unix/upt/index.htm)
+
+[NCBI resource guide](https://www.ncbi.nlm.nih.gov/guide/all/)
+
+[Staphb site for various bioinformatics-related resources](https://staphb.org/)
+
 
