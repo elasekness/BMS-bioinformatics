@@ -1,0 +1,334 @@
+<HTML><head><title>Bioinformatics Workshop</title></head><body>
+<style>
+#h3 {
+ background: lightgray;
+ white-space: nowrap;
+}
+
+table, th, td {
+  border:1px solid black;
+}
+
+ul.a {
+  list-style-type: circle;
+}
+
+#metadata {
+	border-collapse:collapse;
+	width:100%;
+}
+
+#metadata td, #metadata th {
+	border: 1px solid #ddd;
+	padding: 8px;}
+}
+
+#metadata tr:nth-child(even){background-color:#f2f2f2;}
+#metadata tr:hover {background-color:#ddd;}
+
+#metadata th {
+	padding-top: 12px;
+	padding-bottom: 12px;
+	text-align:left;
+	background-color: green;
+	color: white;
+}
+
+pre.code {
+        background-color: #EEE;
+        padding: 5px 0px;
+        margin-top: 5px;
+        margin-bottom: 15px;
+}
+
+</style>
+
+<h1>Tutorial 2 continued</h1>
+<p><b> Background information for SARS-CoV-2 cases under investigation</b></p>
+<p>In early March 2020 of the pandemic, healthcare facilities struggled with outbreaks of COVID-19.
+Genomic epidemiology can assist investigations into the source of an outbreak, the timing of introduction
+of a pathogen into a population, and the number of introductions that have occurred into an area.
+Here we are using the information contained within SARS-CoV-2 genomes to assist a traditional epidemiological investigation
+into the nature of an outbreak in a Westchester healthcare facility. The are four samples from the facility: two
+from staff and two from residents, collected on the same day. A fifth sample is also from a healthcare facility collected four days after.
+While genomic epidemiology cannot confirm the individual source
+in this case, we want to know if the virus was transmitted within the facility and if all cases are a part of the same outbreak.
+Keep in mind that the mutation rate for SARS-CoV-2 is about 1 mutation every two weeks.  At the beginning of the pandemic,
+there was very little variation in SARS-CoV-2 genomes.  Thus, one unique mutation shared among several genomes that is not observed
+in a contextual set of genomes might provide support for a transmission link.  Conversely, it could be that there are many unsampled
+genomes, some of which also contain the unique mutation.</p>
+
+<p> Each student will map the fastqs from one sample to the reference genome and generate a consensus genome for downstream analyses.</p>
+
+<h1>Sample assignment and metadata</h1>
+
+<table id='metadata'>
+	<tr>
+		<th>Student</th>
+		<th>Sample name</th>
+		<th>Collection date</th>
+		<th>County</th>
+		<th>Healthcare facility</th>
+	</tr>
+	<tr>
+		<td>Kathleen McCarthy</td>
+		<td>IDR2000016084</td>
+		<td>2020-03-15</td>
+		<td>Westchester</td>
+		<td>Yes, staff</td>
+	</tr>
+	<tr>
+		<td>Kayla Simanek</td>
+		<td>IDR2000016115</td>
+		<td>2020-03-15</td>
+		<td>Westchester</td>
+		<td>Yes, staff</td>
+	</tr>
+	<tr>
+		<td>Nicholas Keegan</td>
+		<td>IDR2000016158</td>
+		<td>2020-03-15</td>
+		<td>Westchester</td>
+		<td>Yes, resident</td>
+	</tr>
+	<tr>
+		<td>Rachel Lange</td>
+		<td>IDR2000016600</td>
+		<td>2020-03-15</td>
+		<td>Westchester</td>
+		<td>Yes, resident</td>
+	</tr>
+	<tr>
+		<td>Sharon Shaughnessy</td>
+		<td>IDR2000024179</td>
+		<td>2020-03-19</td>
+		<td>Westchester</td>
+		<td>Yes, resident</td>
+	</tr>
+</table>
+<br>
+<br>
+
+<hr>
+<p><b>Follow the general workflow outlined previously to process and map your reads and generate a consensus genome</b></p>
+<hr>
+<br>
+
+<p><li>Use the gsutil copy command to copy the fastq files for your sample from our bucket to the terminal.</li></p>
+<blockquote>
+<p>Before we can copy to and from our bucket, we need to authenticate our accounts to GCP on the computer from which we are executing the gsutil commands.</p>
+<pre class="code">
+gcloud auth login
+</pre>
+<p>A crazy long URL is output. Copy the URL from the terminal window and paste it into a browser (preferably Chrome).
+The web page that is displayed will contain a long auth code. Copy the code and paste it back into the terminal window
+you executed the gcloud cmd in. press return and you should be authenticated to GCP. Some current state info will be output.</p>
+
+<pre class="code">
+gsutil cp gs://wc-bms-bi-training-bucket/outbreak_fastqs/IDR2000024179*gz .
+</pre>
+<p>Make sure you substitute your IDR number in the command above. The ending period is important! Remember, you must specify a destination for your copied files, which is
+you current working directory in this case.</p>
+</blockquote>
+<br>
+
+<li>Clean your raw reads and remove any remaining adapters with TrimGalore, where fastq_R1 and fastq_R2 are your fastq files.</li>
+<blockquote>
+<pre class="code">
+trim_galore -q 20 --length 100 --paired fastq_R1 fastq_R2
+</pre>
+<p>Adapters are short oligonucleotides ligated to a library for sequencing on Illumina machines.
+These are typically removed by the Sequencing Core but some may still remain.
+We might also want to remove reads that fall below a certain average quality or length.
+Before running trim_galore, explore the options available to you with the help command.
+Most default setting are fine.</p>
+
+<p>Here we are using the default quality threshold of 20 (so we don't even have to specify it)
+and a minimum sequence length of 100. 'Paired' keeps R1 and R2 reads in order.  In other words,
+if one of the pairs fails quality control, both are removed.  The nice thing about TrimGalore is it pretty much does
+everything for you automatically - it tries to detect the type of adapter present and it
+adapter and quality trims at the same time.  It also prints some nice summary statistics to STDOUT.</p>
+
+<pre style="font-family: Times New Roman">
+Judging from the TrimGalore output, does your sequencing run look good?
+What is the percentage of reads that passed trimming?
+You can also look at the quality with <a href ="#fastqc">FastQC</a>
+</pre>
+</blockquote>
+<br>
+
+<li>Create an index of your reference genome.</li>
+<blockquote>
+<p>Your adapter, quality trimmed reads are now in files with a "_val_[1,2].fq.gz" ending. We'll map these to the Wuhan-1 reference genome.
+Before we perform the read alignment, we need to index the reference assembly. You might want to rename your fna file to something shorter for easier
+viewing of long commands in your terminal window.  I've renamed mine "wuhan.fna."</p>
+<pre class="code">
+bwa index wuhan.fna
+</pre>
+
+<p>BWA (Burrows-Wheeler Aligner) is a short-read aligner tool (<a style='color:blue' href="http://bio-bwa.sourceforge.net">http://bio-bwa.sourceforge.net</a>).
+Most short-read aligners rely on breaking reads into K-mers (shorter sequences of a specified length),
+aligning these to the reference genome, and extending these seeds with some amount of base misincorporation.
+This is actually faster than aligning the entire read. BWA outputs the alignment information in a <a style='color:blue' href="https://samtools.github.io/hts-specs/SAMv1.pdf">SAM format</a>.
+The output from BWA would need to be saved in a file, converted to a binary format, and sorted by read position for additional analyses,
+such as SNP calling or consensus genome building.  While we could do each step individually, we can also pipe these commands together for faster processing
+and to avoid generating intermediate files that we would later delete.</p>
+</blockquote>
+<br>
+
+<li>Align your reads to the reference genome with BWA, pipe the output to samtools to sort the reads by their coordinates and to convert to a binary format. </li>
+<blockquote>
+<pre class="code">
+bwa mem reference_assembly/wuhan.fna val_1.fq.gz val_2.fq.gz | samtools sort | samtools view -F 4 -o IDRnumber.sorted.bam
+</pre>
+<p>Here we are piping output to samtools twice - once to sort the reads and the next time to convert the output to binary format (SAM to BAM) and save
+in a file with a '.sorted.bam' ending. The -F 4 flag specifies that samtools should not write unaligned reads to the bam file.</p>
+</blockquote>
+<br>
+
+<li>Check the alignment quality with samtools 'flagstat' option.</li>
+<blockquote>
+<pre class="code">
+samtools flagstats IDRnumber.sorted.bam
+</pre>
+<p>This command will output some summary statistics for your alignment.  Notice that 100% of your reads aligned to the reference assembly
+because we excluded unaligned reads from the final sorted bam file.</p>
+<p>Does this seem like a good alignment to you based on the number of PE (paired-end) reads that aligned and are properly paired with each other?</p>
+</blockquote>
+<br>
+
+<li>Remove primer sequences from the alignment with iVAR.</li>
+<blockquote>
+The reads you have just processed were generated with a modified <a style='color:blue' href="https://artic.network/ncov-2019ARTIC protocol">ARTIC protocol</a>
+which, amplifies viral cDNA using a set of tiled, multiplexed primers.  These primers can introduce
+bias in base calling and subsequently affect variant identification and our consensus genome if we don't remove them.
+<a style='color:blue' href="https://github.com/andersen-lab/ivar">iVAR</a> is a tool that will
+remove primers from a BAM alignment, call variants, and produce a consensus genome.
+The primer removal process requires a bed file that contains the locations of the primers
+(a bed file is a tab delimited file that contains genomic coordinates for regions of interest).
+We'll first need to obtain the bed file from our bucket. We'll then need to use <a href ="#docker">docker</a> to run iVAR.
+<br>
+
+<pre class="code">
+gsutil cp gs://wc-bms-bi-training-bucket/reference_assembly/nCoV-2019.V3.ivar.bed .
+docker run --rm -v $(pwd):/data -w /data staphb/ivar ivar trim -i IDRnumber.sorted.bam -b nCoV-2019.V3.ivar.bed -e -p IDRnumber
+</pre>
+
+<p>--rm removes container after use, -v mounts your directory into the container, -w allows the command being executed to access your mounted directory,
+staphb/ivar is the container to be run (note that the repository/program must be specified), 'ivar trim' is the command being executed. The -i, -b, -e,
+and -p arguments are specific to the ivar trim command.</p>
+
+<p> You can also run iVar within the container to explore the different command options with '<code><span style='color:blue'>docker run -it staphb/ivar<span></code>.'
+Run iVAR interactively to determine what the flags mean in the command above.</p>
+
+<p>iVAR prints some nice summary statistics to STDOUT.  YOu can see how many reads were generated by each primer, the percentage of reads that were trimmed and
+removed due to insufficient length.  Ideally, we would like to visually check that our alignment looks ok and primer-free with
+<a style='color:blue' href="https://software.broadinstitute.org/software/igv/home">IGV</a>.  If we have time, we can
+install IGV on your computers and download the files we need from GCP to view our results.</p>
+
+<p>Notice that iVAR outputs a BAM file named with your specified prefix and the '.bam' ending.  We must sort the reads again.
+<pre class="code">
+samtools sort IDRnumber.bam -o IDRnumber.sorted2.bam
+</pre>
+</blockquote>
+<br>
+
+
+<li> Call variants with bcftools and iVar. </li>
+<blockquote>
+<pre class="code">
+bcftools mpileup -f reference_assembly/wuhan.fna IDRnumber.sorted2.bam | bcftools call -c -o IDRnumber.vcf
+</pre>
+
+<p>bcftools will output the base call at each position in the genome.  Use your Linux skills to parse the file
+and find regions of variation.</p>
+
+<pre class="code">
+samtools mpileup -aa --reference wuhan.fna IDRnumber.sorted2.bam | docker run -i --rm -v $(pwd):/data -w /data staphb/ivar ivar variants -p IDRnumber_ivar
+</pre>
+
+<p>The output of samtools mpileup must be passed to iVAR in order to call variants.  The '-i' flag tells the Docker container to
+take information piped to it from STDOUT. Make sure that the parameters values are the ones you want by examining the parameter options of each command.</p>
+<pre style="font-family: Times New Roman">
+What does the output of samtools mpileup look like?
+Do you get the same results with both tools?
+Parsing your results with your command-line skills will make it fairly quick to answer the last question.
+</blockquote>
+<br>
+
+<li>Make a consensus genome with iVar.</li>
+<blockquote>
+<pre class="code">
+samtools mpileup -aa --reference wuhan.fna IDRnumber.sorted2.bam | docker run -i --rm -v $(pwd):/data -w /data staphb/ivar ivar consensus -t 0.75 -m 50 -t 0.90 -m 50 -n N -p IDRnumber
+</pre>
+</blockquote>
+<br>
+
+<hr>
+<p><b>Extra: Redo the analysis above employing Dockerized versions of the software</b></p>
+<hr>
+<br>
+
+<li>List the images already on your VM</li>
+<blockquote>
+<pre class="code">
+docker images
+</pre>
+</blockquote>
+<br>
+
+<li>You can run the dockerized version of TrimGalore to produce trimmed reads again or redo the analysis starting with the previously generated trimmed reads.</li>
+<blockquote>
+<p>With trimmed reads in hand, you can either perform each task of the workflow sequentially or you can string together the commands in a pipe, as we did with
+the compiled software.  To indicate that the Docker image should use the output from the former command as input, we use the 'i' flag. As usual, in the example below,
+substitute "IDRnumber" with the name of your files.</p>
+</blockquote>
+
+
+<a id='docker'>
+<hr>
+<p><b>Docker</b></p>
+<hr>
+<p>A docker container image is essentially like a little VM that contains code for an application and all of its dependencies.
+Thus, docker containers should run the same way on any Linux machine. This is valuable because software is often
+difficult to compile from source code.  Docker containers also eliminate issues with versioning, such that you can
+have and run docker containers of multiple versions of the same program without issue. Conveniently, Docker has already
+been installed for us on our machines.</p>
+
+<p>Docker images can be 'pulled' from repositories on <a style='color:blue' href='https://hub.docker.com/'>Docker hub</a>
+Anyone with a Docker account can create a repository for software that they have containerized.
+Two repositories that I pull from frequently are <a style='color:blue' href="https://github.com/StaPH-B/docker-builds">staphb</a> and 'biocontainers.'
+Although I'm using docker image and container synonymously, an image is really the instructions for making the container. The image
+creates the VM instance.</p>
+
+<p>Two commands that you will use are 'docker pull' and 'docker run'</p>
+<blockquote>
+The command: <code><span style='color:blue'>docker pull staphb/ivar</span></code>, will pull the latest image of ivar from the staphb repository registered on Docker Hub.
+You can specify another version with tags: <code><span style='color:blue'>docker pull staphb/spades:3.12.0</span></code>, now pulls an image for spades version 3.12.0
+<p>The 'docker run' command will:
+<ol>
+<li value='1'>
+initiate Docker client talking to docker daemon</li>
+<li>pull image if not found locally by Docker daemon</li>
+<li>start new container from image</li>
+<li>execute specified command</li>
+</ol>
+<p>The docker run command essentially converts our image to a container.  While we can execute a command, to actually execute our command
+on our files, we need to make them visible to the container.  Thus, we must mount a working directory inside the VM.  To do this, we
+will use two arguments with our run command:</p>
+<pre style="font-family: Times New Roman">
+<code><span style='color:blue'>-v $(pwd):/data</span></code> mounts our current directory to the VM (it will also create a directory called 'data' if it doesn't exist).
+<code><span style='color:blue'>-w /data</span></code> allows the command being executed to run in the directory specified.
+</pre>
+<p>When the container runs, it's being run as the 'root' user. We can change this but the default is fine for now.
+The only issue is that the output produced will be owned by 'root', not by us.  Thus, we will have read-only permissions.  This shouldn't be a problem
+because we aren't altering our output files, but we can always change the permissions with a 'sudo chmod' command.</p>
+</blockquote>
+<p> For an additional Docker tutorial see <a style='color:blue' href="https://github.com/PawseySC/bio-workshop-18">https://github.com/PawseySC/bio-workshop-18</a></p>
+<p> For more information on Docker see <a style='color:blue' href="https://blog.sourcerer.io/a-crash-course-on-docker-learn-to-swim-with-the-big-fish-6ff25e8958b0">https://blog.sourcerer.io/a-crash-course-on-docker-learn-to-swim-with-the-big-fish-6ff25e8958b0</a>
+</a>
+<br>
+<br>
+
+</body>
+</HTML>

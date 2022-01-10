@@ -1,0 +1,118 @@
+<HTML><head><title>Bioinformatics Workshop</title></head><body>
+<style>
+#h3 {
+ background: lightgray;
+ white-space: nowrap;
+}
+
+table, th, td {
+  border:1px solid black;
+}
+
+ul.a {
+  list-style-type: circle;
+}
+
+#metadata {
+	border-collapse:collapse;
+	width:100%;
+}
+
+#metadata td, #metadata th {
+	border: 1px solid #ddd;
+	padding: 8px;}
+}
+
+#metadata tr:nth-child(even){background-color:#f2f2f2;}
+#metadata tr:hover {background-color:#ddd;}
+
+#metadata th {
+	padding-top: 12px;
+	padding-bottom: 12px;
+	text-align:left;
+	background-color: green;
+	color: white;
+}
+
+pre.code {
+        background-color: #EEE;
+        padding: 5px 0px;
+        margin-top: 5px;
+        margin-bottom: 15px;
+}
+
+
+</style>
+
+<h1>Tutorial 3 Continued</h1>
+
+<hr>
+<p><b>Annotate your consensus SARS-CoV-2 genome with <a style='color:blue' href='https://github.com/tseemann/prokka'> Prokka</a></b></p>
+<hr>
+<p>We will use a program called “Prokka” to annotate our genomes.
+Prokka takes advantage of several other tools to make high-quality predictions for coding sequences, tRNAs, rRNAs, and CRISPRs.
+Prokka uses BLAST against well characterized protein databases as well as HMM (Hiden Markov Models) scans.
+Hidden Markov Models are probabilistic models about the identity of an amino acid/nucleotide at a certain position in a protein/gene generated from multi-sequence alignments.
+HMM based predictions can be particularly powerful in identifying distantly related homologs that a Blast search wouldn’t detect.</p>
+<br>
+
+<li>Run the dockerized version of Prokka in interactive mode to see the help menu.</li>
+<blockquote>
+<pre class="code">
+docker run -it staphb/prokka
+prokka
+</pre>
+<p>As you can see, there are many options associated with Prokka, including ways to customize the annotation output.
+Some useful arguments include specifying the name of the locus tag, adding the genus and species names to the annotation files,
+naming the output directory, and specifying the annotation mode - in this case it will be 'Viruses.'</p>
+</blockquote>
+<br>
+
+<li>Before running Prokka, change the ownership of your consensus genome fasta file and shorten the sequence name.</li>
+<blockquote>
+<pre class="code">
+sudo chown root:your_username IDRnumber.fa
+</pre>
+<p>chown = change ownership. Since we generated our consensus genomes with a dockerized version of iVAR without changing the user, the fasta file belongs to 'root.'
+This means that we cannot modify the file.  We need to shorten the name of the definition line (or sequence name) because Prokkka will complain about anything
+longer than 20 characters.  Thus we must change the ownership of the file from root to us.  After you have changed the ownership of this file, you can shorten
+the sequence name in Nano.</p>
+</blockquote>
+<br>
+
+<li>Instead of changing the ownership of the fasta file, you could also change the name of the sequence with '<i>sed</i>' and write to a new file. You can first use '<i>grep</i>' to obtain the name of the sequence.</li>
+<blockquote>
+<pre class="code">
+sed 's/Consensus_\(.*)_S.*/\1/' IDRnumber.fa > IDRnumber_modified.fa
+</pre>
+<p>We'll talk about the syntax of this command in class.</p>
+</blockquote>
+
+<li>Run Prokka with the 'Viruses' option for annotation mode.</li>
+<blockquote>
+<pre class="code">
+docker run --rm -v $(pwd):/data -w /data staphb/prokka prokka --kingdom 'Viruses' --species 'SARS-CoV-2' --prefix 'IDRnumber' --outdir IDRnumber_annotation IDRnumber.fa
+</pre>
+<ol>
+<li value='1'>
+Look at the output generated.</li>
+<li>How many proteins were annotated?</li>
+<li>Do those seem correct? How could you test this?</li>
+<li>Do the coding sequences have approximately the same coordinates as the reference genome? Hint: compare gff files.</li>
+</ol>
+</blockquote>
+<br>
+
+<hr>
+<p><b>If time, annotate with <a style='color:blue' href="https://github.com/ncbi/vadr/wiki/Coronavirus-annotation#howto">VADR</a> as well</b></p>
+<hr>
+<p>As you can see, there are many ways to get the same answers!</p>
+
+
+<br>
+<br>
+
+</body>
+</HTML>
+
+
