@@ -192,7 +192,6 @@ Remove a file.
 > Can you remove a file from a different directory without having to change directories? 
 > How would you remove a directory?
 
-<br>
 
 
 ## Notes on working in a Linux environment
@@ -208,6 +207,8 @@ For example, if I had only one file in my directory that began with a “b,” I
 Try `which` to see if the command is in your path – whether the command is in a location that the computer searches for executing commands.
 * Hit the up-arrow key to recall a command you entered previously.
 
+
+
 ## Databases and obtaining sequences
 
 
@@ -222,10 +223,10 @@ the function of the coding sequences, and the nucleotide positions of the genes 
 Navigate to NCBI’s homepage: [https://www.ncbi.nlm.nih.gov/](https://www.ncbi.nlm.nih.gov/)
 
 
-Notice that there are options to submit sequences, download sequences, and even analyze data.
-PubMed allows literature searches and BLAST is an alignment tool to look for sequences that are similar (a proxy for homology) to your queries.
-Also notice that NCBI has provided a quick link to SARS-CoV-2 data. You could obtain a nucleotide record by clinking on this link but we'll follow
-the more traditional route for now.
+> Notice that there are options to submit sequences, download sequences, and even analyze data.
+> PubMed allows literature searches and BLAST is an alignment tool to look for sequences that are similar (a proxy for homology) to your queries.
+> Also notice that NCBI has provided a quick link to SARS-CoV-2 data. You could obtain a nucleotide record by clinking on this link but we'll follow
+> the more traditional route for now.
 
 
 Choose “Genome” under the top left pull-down menu (set to “All Databases” by default), type SARS-CoV-2 into the search area, and hit enter.
@@ -242,9 +243,9 @@ Click on the RefSeq ('R') FTP link for MN908497.3 (Wuhan-1). Open the link as a 
 Instead of a two-step process of downloading files to our computers and then uploading them to the cloud, we will use the **`curl`** command (copy url) to copy the files directly to
 our VMs.
 
-<br>
 
 Right click on the fna file and 'Get info.' The information page will list the file location on NCBI's server.
+
 
 Copy the server information and type the following command in your VM terminal:
 
@@ -254,11 +255,11 @@ Copy the server information and type the following command in your VM terminal:
 > Repeat this for the gff and faa files
 
 
+
 ## Obtaining reads from the SRA
 
-Now let's download the raw reads for the Wuhan-1 reference genome from the SRA (sequence read archive) database.  We'll use these later to perform a de-novo assembly.
-Typically, any published NGS data must also be submitted to the SRA. Each sample/specimen sequenced will have a BioSample accession number. Biosample information provides associated
-metadata.  The SRA and Biosample for each submission are further housed under a BioProject, which can contain multiple submissions from the same study or experiment
+
+Now let's download the raw reads for the Wuhan-1 reference genome from the SRA (sequence read archive) database.  We'll use these later to perform a de-novo assembly. Typically, any published NGS data must also be submitted to the SRA. Each sample/specimen sequenced will have a BioSample accession number. Biosample information provides associated metadata. The SRA and Biosample for each submission are further housed under a BioProject, which can contain multiple submissions from the same study or experiment
 
 
 Return to the [NCBI homepage](https://www.ncbi.nlm.nih.gov/) and search genomes for Wuhan-1 again. This brings you to its GenBank page.
@@ -276,6 +277,7 @@ SRA submission).  The sequencing was performed on an Illumina MiniSeq and the re
 We could download the two fastq files using the NCBI link provided or we could use faster tools provided by NCBI.
 
 
+
 Use **`prefetch`** and **`fasterq-dump`** tools from the SRA toolkit to download the Wuhan-1 fastq files.
 
 
@@ -288,13 +290,12 @@ Use **`prefetch`** and **`fasterq-dump`** tools from the SRA toolkit to download
 > More information on the SRA-toolkit and other frequently used tools can be found here: [SRA toolkit](https://trace.ncbi.nlm.nih.gov/Traces/sra/sra.cgi?view=toolkit_doc)
 
 
-> **Note:** If your are having trouble obtaining the fna, faa, and gff files from NCBI, you can also copy them to your account on the VM from our GCP bucket using
-> the gsutil commands provided by GCP. Fastq files also available in the bucket in the same folder: 'reference_assembly.' However, you will need to authenticate
-> your account first in order to use the gsutil commands.
+> **Note:** If your are having trouble obtaining the fna, faa, and gff files from NCBI, you can also copy them to your account on the VM from our GCP bucket
+> using the gsutil commands provided by GCP. Fastq files also available in the bucket in the same folder: 'reference_assembly.' However, you will need to
+> authenticate your account first in order to use the gsutil commands.
 
+> `gsutil -m cp gs://wc-bms-bi-training-bucket/reference_assembly/GCF* .`
 
-`gsutil -m cp gs://wc-bms-bi-training-bucket/reference_assembly/GCF* .`
-
-> We'll discuss this command more in class but essentially, we are copying (cp) all files that start with GCF from our GCP bucket to our current directory `.`.
+> We'll discuss this command more in class but essentially, we are copying all files that start with GCF from our GCP bucket to our current directory `.` .
 
 
