@@ -20,10 +20,11 @@ In general, the syntax will be: `Command File`,
 where `Command` is the function you want to perform on the` File` or `Directory`
 that you specify. Sometimes specifying a command is all we need.
 
--Examine the contents of your directory with:
+> Examine the contents of your directory with:
+ 
  `ls`
 
- `ls` = list
+ **`ls`** = list
 
 <br>
 
