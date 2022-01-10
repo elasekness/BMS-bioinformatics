@@ -20,11 +20,11 @@ In general, the syntax will be: `Command File`,
 where `Command` is the function you want to perform on the` File` or `Directory`
 that you specify. Sometimes specifying a command is all we need.
 
-> Examine the contents of your directory with:
+Examine the contents of your directory with:
  
  `ls`
 
- **`ls`** = list
+ > **`ls`** = list
 
 <br>
 
@@ -35,16 +35,16 @@ To navigate from one directory to another, we must specify the location of the d
 Directories have a forward slash `/` after their names.  Thus to get to a subdirectory within a directory
 you would specify the path by stringing together the directory names, separated by `/`. We'll practice below
 
-- First, determine the name and location of your home directory.
+First, determine the name and location of your home directory.
 
  `echo $HOME`
 
-`echo` = repeat, `$HOME` = variable name for your home directory and its location on the server.
-Try the `echo` command with other variable names, such as `$SHELL` or `$PATH`.
+> **`echo` ** = repeat, **`$HOME`** = variable name for your home directory and its location on the server.
+> Try the `echo` command with other variable names, such as **`$SHELL`** or **`$PATH`**.
 
 <br>
 
-- You can also print your working directory (where you are).
+You can also print your working directory (where you are).
  
  `pwd`
 
