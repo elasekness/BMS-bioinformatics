@@ -134,14 +134,46 @@ Each student will map the fastqs from one sample to the reference genome and gen
 
 <br>
 
-* Use the gsutil copy command to copy the fastq files for your sample from our bucket to the terminal.
+Use the **`gsutil`** copy command to copy the fastq files for your sample from our bucket to the terminal.
 
 Before we can copy to and from our bucket, we need to authenticate our accounts to GCP on the computer from which we are executing the gsutil commands.
 
-	`gcloud auth login`
+	gcloud auth login
 
-A crazy long URL is output. Copy the URL from the terminal window and paste it into a browser (preferably Chrome).
-The web page that is displayed will contain a long auth code. Copy the code and paste it back into the terminal window
-you executed the gcloud cmd in. press return and you should be authenticated to GCP. Some current state info will be output.
+> A crazy long URL is output. Copy the URL from the terminal window and paste it into a browser (preferably Chrome).
+> The web page that is displayed will contain a long auth code. Copy the code and paste it back into the terminal window
+> you executed the gcloud cmd in. press return and you should be authenticated to GCP. Some current state info will be output.
 
+<br>
 
+	gsutil cp gs://wc-bms-bi-training-bucket/outbreak_fastqs/IDR2000024179*gz .
+	
+> Make sure you substitute your IDR number in the command above. The ending period is important! Remember, you must specify a destination for your copied files, 
+> which is you current working directory in this case.
+
+<br>
+
+Clean your raw reads and remove any remaining adapters with TrimGalore, where fastq_R1 and fastq_R2 are your fastq files.
+
+	trim_galore -q 20 --length 100 --paired fastq_R1 fastq_R2
+	
+> Adapters are short oligonucleotides ligated to a library for sequencing on Illumina machines. These are typically removed by the Sequencing Core but some 
+> may still remain. We might also want to remove reads that fall below a certain average quality or length.
+> Before running trim_galore, explore the options available to you with the help command. Most default setting are fine.
+>
+> Here we are using the default quality threshold of 20 (so we don't even have to specify it) and a minimum sequence length of 100. 
+> **`Paired`** keeps R1 and R2 reads in order.  In other words, if one of the pairs fails quality control, both are removed.  
+> The nice thing about TrimGalore is it pretty much does everything for you automatically, including detecting the type of adapter present 
+> It also prints some nice summary statistics to STDOUT.
+
+* Judging from the TrimGalore output, does your sequencing run look good?
+* What is the percentage of reads that passed trimming?
+* You can also look at the quality with [FastQC](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/)
+
+<br>
+
+Create an index of your reference genome.
+
+Your adapter, quality trimmed reads are now in files with a "val_[1,2].fq.gz" ending. We'll map these to the Wuhan-1 reference genome.
+Before we perform the read alignment, we need to index the reference assembly. You might want to rename your fna file to something shorter for easier
+viewing of long commands in your terminal window.  I've renamed mine "wuhan.fna."
