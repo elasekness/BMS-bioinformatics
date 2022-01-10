@@ -17,12 +17,17 @@ Our read data are in fastq format. Fastq files contain the quality score for eac
 `>@SRR10971381.1 1 length=151`
 <br>
 `AGTCGATCAG`
+<br>
 `+`
+<br>
 `BBBCCCKKI`
 
 > The read name, naming conventions may vary but names are always prefaced by '@'
+<br>
 > This is followed by the sequence line
+<br>
 > `+` a Line break
+<br>
 > Followed by quality scores for each nucleotide in ASCII format
 
 <br>
