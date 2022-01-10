@@ -22,7 +22,7 @@ that you specify. Sometimes specifying a command is all we need.
 
 Examine the contents of your directory with:
  
- `ls`
+`ls`
 
  > **`ls`** = list
 
@@ -37,34 +37,34 @@ you would specify the path by stringing together the directory names, separated 
 
 First, determine the name and location of your home directory.
 
- `echo $HOME`
+`echo $HOME`
 
-> **`echo` ** = repeat, **`$HOME`** = variable name for your home directory and its location on the server.
+> **`echo`** = repeat, **`$HOME`** = variable name for your home directory and its location on the server.
 > Try the `echo` command with other variable names, such as **`$SHELL`** or **`$PATH`**.
 
 <br>
 
 You can also print your working directory (where you are).
  
- `pwd`
+`pwd`
 
- `pwd` = print working directory
-
-<br>
-
-- Make a directory within your home directory called `genomes`.
-
- `mkdir genomes`
-
- `mkdir` = make directory
+> **`pwd`** = print working directory
 
 <br>
 
-- Change (move) to a different directory.
+Make a directory within your home directory called `genomes`.
 
- `cd genomes`
+`mkdir genomes`
 
- `cd` = change directory. Use `../` or `..` to move up one directory (back to your home directory). What does `cd` alone do?
+> **`mkdir`** = make directory
+
+<br>
+
+Change (move) to a different directory.
+
+`cd genomes`
+
+> **`cd`** = change directory. Use **`../`** or **`..`** to move up one directory (back to your home directory). What does **`cd`** alone do?
 
 <br>
 
@@ -77,23 +77,23 @@ There three sets of permissions representing 1) the User (you), 2) the group (mu
 and 3) Others (Everyone else in the world).
 <br>
 
-- Examine the permissions of your 'genomes' directory.
+Examine the permissions of your 'genomes' directory.
 
- `ls -l genomes`
+`ls -l genomes`
 
- `ls -l` = long list, providing you information on when the `genomes` directory was created and its associated permissions.
+> **`ls -l`** = long list, providing you information on when the **`genomes`** directory was created and its associated permissions.
 
 <br>
 
-- Change the permissions associated with your `genomes` directory with the 'chmod' command (change mode).
+Change the permissions associated with your `genomes` directory with the 'chmod' command (change mode).
 
- `chmod 775< genomes`
+`chmod 775< genomes`
 
-Permissions are represented by three-digit (for user, group, and other) octal numbers.
-Here we are allowing the user and group universal permissions (7 = read, write, and execute) and all others
-the ability to read and write only (5).
+> Permissions are represented by three-digit (for user, group, and other) octal numbers.
+> Here we are allowing the user and group universal permissions (7 = read, write, and execute) and all others
+> the ability to read and write only (5).
 
-For more information on permissions, see: [Linux permissions](https://www.guru99.com/file-permissions.html#linux_file_ownership)
+> For more information on permissions, see: [Linux permissions](https://www.guru99.com/file-permissions.html#linux_file_ownership)
 
 <br>
 
@@ -107,94 +107,90 @@ Similarly, we can view and edit files in a text editor or we can print their con
 As a general rule, it's always good to examine some of the contents of your file to ensure you've generated the results you want in the
 format you want it. Or that you are using the correct file and format for downstream applications.
 
-- Redirect STDOUT to a file.
+Redirect STDOUT to a file.
 
- `ls /usr/bin > programs.txt`
+`ls /usr/bin > programs.txt`
 
-The path `/usr/bin` specifies the location where various Bash commands are found. When you type a command, `/usr/bin` is one of the locations
-your computer searches to find and execute the command. Was `/usr/bin` part of your `$PATH`?
-Here we are redirecting the STDOUT from the `ls` command to a file named `programs.txt`. The `>` sign is responsible for the redirection.
-
-<br>
-
-- Scroll through the contents of your file.
-
- `more programs.txt`
-
-Scroll through line-by-line with the enter key.  Scroll through page-by-page with the space key.
-Do you notice that the file contains some of the commands you have just used?
-Exit with `control-c`.
+> The path **`/usr/bin`** specifies the location where various Bash commands are found. When you type a command, **`/usr/bin`** is one of the locations
+> your computer searches to find and execute the command. Was **`/usr/bin`** part of your **`$PATH`**?
+> Here we are redirecting the STDOUT from the **`ls`** command to a file named **`programs.txt`**. The **`>`** sign is responsible for the redirection.
 
 <br>
 
-- Display the first ten lines of your file.
+Scroll through the contents of your file.
 
- `head programs.txt`
+`more programs.txt`
 
-`head` displays the first ten lines by default but you can specify the number of lines with a flag.
-For example, `head -200 programs.txt` will display the first two hundred lines of your file. In general, most
-commands have additional arguments (or flags) associated with them. You can see the different usage statements
-by typing the command with a `-help` or `--help` option.
-
-<br>
-
-- Display the last ten lines of your file.
-
-
- `tail programs.txt`
-
+> Scroll through line-by-line with the enter key.  Scroll through page-by-page with the space key.
+> Do you notice that the file contains some of the commands you have just used?
+> Exit with **`control-c`**.
 
 <br>
 
-- Print the entire contents of your file to your screen.
+Display the first ten lines of your file.
+
+`head programs.txt`
+
+> **`head`** displays the first ten lines by default but you can specify the number of lines with a flag.
+> For example, **`head -200 programs.txt`** will display the first two hundred lines of your file. In general, most
+> commands have additional arguments (or flags) associated with them. You can see the different usage statements
+> by typing the command with a **`-help`** or **`--help`** option.
+
+<br>
+
+Display the last ten lines of your file.
+
+`tail programs.txt`
+
+<br>
+
+Print the entire contents of your file to your screen.
 
 
 `cat programs.txt`
 
- `cat` = concatenate.  The `cat` command can also join the contents of multiple files together.
+> **`cat`** = concatenate.  The **`cat`** command can also join the contents of multiple files together.
 
 <br>
 
-- Make and view the contents of a file with a text editor.
+Make and view the contents of a file with a text editor.
 
 
- `nano new_file.txt`
+`nano new_file.txt`
 
-Nano, emacs, vim, and vi are all text editors.
-You can make an empty file on the fly as we did here.  This will open a blank text editor screen.
-Type some content and save it with `control-o`. To exit the text editor, use `control-x`.
- More information on Nano commands can be found here: [Nano](https://www.howtogeek.com/howto/42980/the-beginners-guide-to-nano-the-linux-command-line-text-editor/)
-
-<br>
-
-- Rename a file.
-
-
- `mv programs.txt installed_programs.txt`
-
-`mv` = move. Renaming files with `mv` will overwrite any existing file.  You can also mv a file
-to a different directory.  
-Try it: `mv installed_programs.txt genomes`
-Can you move the file back to your home directory?
+> Nano, emacs, vim, and vi are all text editors.
+> You can make an empty file on the fly as we did here.  This will open a blank text editor screen.
+> Type some content and save it with **`control-o`**. To exit the text editor, use **`control-x`**.
+> More information on Nano commands can be found here: 
+> [Nano](https://www.howtogeek.com/howto/42980/the-beginners-guide-to-nano-the-linux-command-line-text-editor/)
 
 <br>
 
-- Copy a file.
+Rename a file.
 
+`mv programs.txt installed_programs.txt`
 
- `cp installed_programs.txt duplicate.txt`
-
-<code>cp</code> = copy. Can you copy a file to a different directory in one command?
+> **`mv`** = move. Renaming files with `mv` will overwrite any existing file.  You can also mv a file to a different directory.  
+> Try it: **`mv installed_programs.txt genomes`**
+> Can you move the file back to your home directory?
 
 <br>
 
-- Remove a file.
+Copy a file.
 
+`cp installed_programs.txt duplicate.txt`
 
- `rm duplicate.txt`
+> **`cp`** = copy. Can you copy a file to a different directory in one command?
 
-<code>rm</code> = remove.  Remember, a removed file cannot be restored.  Can you remove
-a file from a different directory without having to change directories? How would you remove a directory?
+<br>
+
+Remove a file.
+
+`rm duplicate.txt`
+
+> **`rm`** = remove.  Remember, a removed file cannot be restored.  
+> Can you remove a file from a different directory without having to change directories? 
+> How would you remove a directory?
 
 <br>
 
