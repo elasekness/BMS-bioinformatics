@@ -14,20 +14,14 @@ software pulled from Docker. Finally, you will learn about GitHub and Docker for
 
 Our read data are in fastq format. Fastq files contain the quality score for each nucleotide in the read and each read has four lines associated with it:
 
-`>@SRR10971381.1 1 length=151`
-<br>
-`AGTCGATCAG`
-<br>
-`+`
-<br>
-`BBBCCCKKI`
+	>@SRR10971381.1 1 length=151
+	AGTCGATCAGCTGAGTACTAGTAGCATG
+	+
+	BBBCCCKKIBCCKKBIJDFFHHHIIJKK
 
-> The read name, naming conventions may vary but names are always prefaced by '@'
-<br>
-> This is followed by the sequence line
-<br>
-> `+` a Line break
-<br>
+> The read name, naming conventions may vary but names are always prefaced by '@'<br>
+> This is followed by the sequence line <br>
+> `+` a Line break <br>
 > Followed by quality scores for each nucleotide in ASCII format
 
 <br>
@@ -56,48 +50,48 @@ A general workflow for generating a reference-based assembly is given below:
 
 **Quality control**
 
-	* Generate some summary statistics with FastQC
+  - Generate some summary statistics with FastQC
 
 **Adaptor removal (and primer removal) and quality trimming**
 
-	- cutadapt
-	- Trimmomatic
-	- BBduk from BBtools
-	- FastX-toolkit
-	- TrimGalore
-	- Seqyclean
-	- And many more
+ - cutadapt
+ - Trimmomatic
+ - BBduk from BBtools
+ - FastX-toolkit
+ - TrimGalore
+ - Seqyclean
+ - And many more
 
 **Read correction (optional, this is more important for long-read sequencing technologies such as Nanopore)**
 
-	- Quake
-	- BBnorm
-	- SHRIMP
-	- Quorum
-	- Lighter
-	- Fermi
-	- Musket
-	- And many, many more
+ - Quake
+ - BBnorm
+ - SHRIMP
+ - Quorum
+ - Lighter
+ - Fermi
+ - Musket
+ - And many, many more
 
 **Read alignment or mapping to reference genome**
 
-	- BWA
-	- Bowtie
-	- BBmap
-	- STAR (for RNA-Seq)
+ - BWA
+ - Bowtie
+ - BBmap
+ - STAR (for RNA-Seq)
 
 **General statistics pertaining to reference assembly**
 
-	- Samtools
-	- Picard
-	- BBtools
-	- Quast
+ - Samtools
+ - Picard
+ - BBtools
+ - Quast
 
 **SNP and INDEL calling**
 
-	- Samtools/bcftools
-	- GATK
-	- iVAR
+ - Samtools/bcftools
+ - GATK
+ - iVAR
 
 **Additional SNV filtering and annotation**
 
