@@ -87,7 +87,7 @@ Examine the permissions of your 'genomes' directory.
 
 Change the permissions associated with your `genomes` directory with the 'chmod' command (change mode).
 
-`chmod 775< genomes`
+`chmod 775 genomes`
 
 > Permissions are represented by three-digit (for user, group, and other) octal numbers.
 > Here we are allowing the user and group universal permissions (7 = read, write, and execute) and all others
