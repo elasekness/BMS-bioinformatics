@@ -1,6 +1,6 @@
 ## Tutorial 2
 
-*Objective:* To perform reference-based assemblies of SARS-CoV-2 genomes to determine whether cases from patients and staff at a facility are part of the same
+**Objective:** To perform reference-based assemblies of SARS-CoV-2 genomes to determine whether cases from patients and staff at a facility are part of the same
 transmission chain.
 
 You will map reads to a reference assembly, generate consensus genomes, identify single nucleotide variants (SNVs),
@@ -15,6 +15,7 @@ software pulled from Docker. Finally, you will learn about GitHub and Docker for
 Our read data are in fastq format. Fastq files contain the quality score for each nucleotide in the read and each read has four lines associated with it:
 
 `>@SRR10971381.1 1 length=151`
+<br>
 `AGTCGATCAG`
 `+`
 `BBBCCCKKI`
@@ -50,7 +51,7 @@ A general workflow for generating a reference-based assembly is given below:
 
 **Quality control**
 
-	- Generate some summary statistics with FastQC
+	* Generate some summary statistics with FastQC
 
 **Adaptor removal (and primer removal) and quality trimming**
 
