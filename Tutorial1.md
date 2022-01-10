@@ -306,7 +306,7 @@ We might also want to determine some basic features of the file.
 For example, we might want to know how many sequences are in our fasta file without having to open and scroll through a file.
 You will probably use the following commands most frequently to parse and manipulate files – grep, sed, cut, paste, sort and uniq.
 These commands can perform simple routines such as search and replace but combined with regular expressions, these tools are incredibly powerful and efficient.
-Piping is specified by “|” and simply pipes the STDOUT from one command to another so that you can string multiple operations together on one line.
+Piping is specified by **`|`** and simply pipes the STDOUT from one command to another so that you can string multiple operations together on one line.
 Sometimes the most challenging bioinformatics operations are wrangling your data into the proper format.
 <br>
 
@@ -330,7 +330,7 @@ Use a 'for loop' to decompress all of your files at once:
 > Here we used a for loop and the greedy metacharacter, **`*`**.  We'll cover both in more detail late. In brief, for loops help us
 > automate repetitive processes and the special **`*`** character represents any character any number of times.
 > For now, examine the contents of your files with **`head`**, **`tail`**, or **`more`**.
-> Fasta files have a Definition Line or Header, with the sequence name proceeded by a '>', followed by the sequence starting on the next line.
+> Fasta files have a Definition Line or Header, with the sequence name proceeded by a **`>`**, followed by the sequence starting on the next line.
 > GFF files have a standard format as well with each field/column (separated by tabs), which contain specific information about the entry.
 > For example, the 4th and 5th fields of a gff file always contain the start and stop coordinates for the entry.
 > Each line contains information on an entry, such as a gene or coding sequence.
@@ -398,7 +398,7 @@ our screen, making it difficult to visualize.
 Extract all coding sequences (CDS) and view their start and stop positions with a combination of 'grep' and 'cut.'
 
 
-`grep "CDS" <span style='color:red'>GCF_009858895.2_ASM985889v3_genomic.gff | cut -f 3,4,5`
+`grep "CDS" GCF_009858895.2_ASM985889v3_genomic.gff | cut -f 3,4,5`
 
 > We have searched for every line that contains **`CDS`** and cut those lines on the third, fourth, and fifth delimiters (delimiters can be anything but the default is a tab).
 > Essentially, we have extracted the information in the third, fourth, and fifth fields of each line that contained **`CDS`**.
@@ -453,7 +453,7 @@ Regular expressions are search terms that incorporate special characters to make
 Metacharacters have a special meaning and include:
 
 - `*` 	Star is a greedy metacharacter meaning match anything any number of times
-- `[]` 	Brackets are often used to specify a range of numbers or letters to include in a search pattern
+- `[]` Brackets are often used to specify a range of numbers or letters to include in a search pattern
 - `.` 	A period represents any character once
 - `?` 	Match one character
 - `$`		End of Line
