@@ -1,0 +1,182 @@
+<HTML><head><title>Bioinformatics Workshop</title></head><body>
+<style>
+#h3 {
+ background: lightgray;
+ white-space: nowrap;
+}
+
+table, th, td {
+  border:1px solid black;
+}
+
+ul.a {
+  list-style-type: circle;
+}
+
+#metadata {
+	border-collapse:collapse;
+	width:100%;
+}
+
+#metadata td, #metadata th {
+	border: 1px solid #ddd;
+	padding: 8px;}
+}
+
+#metadata tr:nth-child(even){background-color:#f2f2f2;}
+#metadata tr:hover {background-color:#ddd;}
+
+#metadata th {
+	padding-top: 12px;
+	padding-bottom: 12px;
+	text-align:left;
+	background-color: green;
+	color: white;
+}
+
+</style>
+
+<h1>Tutorial 2 continued</h1>
+
+<hr>
+<p><b>Evaluate the likelihood that your genomes represent viruses from the same transmission chain</b></p>
+<hr>
+<p>Now that we have our consensus genomes, we'll want to compare them to others from the facility outbreak as well as to others from NYS and even other states/countries from the same time period.
+A good place to start is to create a multi-sequence alignment, which you will use to generate a phylogeny.  The phylogeny will help you visualize the
+relationships among your genomes.  We can create a SNP matrix after aligning our sequences. This would allow us to quickly see how different our genomes are from each other.</p>
+<br>
+
+<hr>
+<p><b>But before we get too far </b></p>
+<hr>
+
+<p>This is a good opportunity to become familiar with GitHub - a repository for code, workflows, and associated data. GitHub is the source for much of the software
+we are using and has become the default location for depositing code. There are often many ways to install software and the type of
+installation you perform will depend on your operating system (if Linux – the flavor of Linux you are using), what other dependencies you have installed or
+need installed (including a compiler), and the options for installation provided by the developer. Some software can be downloaded as a pre-compiled binary, which
+should require no further steps from you to work if you have downloaded the appropriate binary for your OS. And many bioinformatics programs can be installed with
+the apt-get commands if you are working in Ubuntu (we are!).  For example, 'sudo apt install prokka' would search a database of available packages and
+install the annotation program 'prokka' as well as all of its many dependencies, and put the software in the appropriate place on our VM (in our path).
+The caveat is you that need sudo privileges to install the software system-wide (and not just locally on your account).</p>
+
+<li> Go to the GitHub page for the program snp-dists <a style='color:blue' href="https://github.com/tseemann/snp-dists">https://github.com/tseemann/snp-dists</a>, which we will use to calculate the number of SNPs between sequences.</li>
+<li> Click on the green 'Code' button and copy the link 'https://github.com/tseemann/snp-dists.git'</li>
+<li> In your terminal window type:</li>
+<blockquote>
+<div id='h3'>
+git clone https://github.com/tseemann/snp-dists.git
+</div>
+What did this do? Is the executable installed locally or globally?
+</blockquote>
+<li> cd to the snp-dists directory and type 'make'</li>
+<blockquote>
+What did this do? You should see that an executable called 'snp-dists' was compiled by the 'make' command.  Executables are conveniently colored green on our VM.
+We could move this to a place that's in our PATH (such as /usr/local/bin) so that we'd only have to type the 'snp-dists' command when we want to run the program
+but this also requires sudo privileges (and the executable is already there so don't try this).  Or we can simply point the VM to the location of our snp-dists program
+when we want to run it.
+</blockquote>
+<br>
+
+<hr>
+<p><b> And now back to our investigation</b></p>
+<hr>
+
+<li>Copy your consensus genomes to the bucket.  Once everyone has copied their fasta files, copy all of them to the VM.</li>
+<blockquote>
+<div id='h3'>
+gsutil cp IDRnumber.fa gs://wc-bms-bi-training-bucket/consensus_genomes
+</div>
+<p>Note that there was an additional fasta file in this bucket called 'additional_genomes.fa' that you have copied over.  These
+are contextual sequences to help us determine whether the genomes from our investigation are linked.
+The contextual sequences were collected from the same time period as our genomes as well as from the same and neighboring
+counties as where our specimens were collected. These genomes were obtained from <a style='color:blue' href="https://www.gisaid.org/">GISAID</a>,
+which has become the global standard for depositing SARS-CoV-2 genomes and associated metadata.</p>
+<div id='h3'>
+gsutil -m cp gs://wc-bms-bi-training-bucket/consensus_genomes/consensus_genomes/*fa .
+</div>
+<p>Since you are copying all fasta files, the copy of your fasta file in your account will simply be overwritten.</p>
+</blockquote>
+<br>
+
+
+<li>Concatenate your files into a single multi-fasta file and align your genomes with <a style='color:blue' href="https://mafft.cbrc.jp/alignment/software/">mafft</a>, using the reference genome as a guide.</li>
+<blockquote>
+<div id='h3'>
+cat *fa > all.fasta
+</div>
+<div id='h3'>
+mafft --auto --keeplength --addfragments all.fasta wuhan.fna > all.aln.fasta
+</div>
+</blockquote>
+<br>
+
+<li>Remove the reference genome from your alignment (as the branch length will be very long) and reconstruct a phylogeny with IQTree</li>
+<blockquote>
+<div id='h3'>
+exclude_sequences.py remove.txt all.aln.fasta > final.fasta
+</div>
+<p>We are using a Python script to remove the reference from our alignment file and saving the results to a file called 'final.fasta.'
+The 'remove.txt' file contains a list of sequences that you want removed.  This hasn't been generated but you can generate it using
+your command-line skills.</p>
+</blockquote>
+<br>
+
+<li>Reconstruct a phylogeny with your final alignment with IQTree.</li>
+<blockquote>
+<div id='h3'>
+iqtree -s final.fasta -m GTR+G4
+</div>
+<p>IQTree is a program for rapidly generating a maximum likelihood (ML) tree for hundreds to thousands of sequences.
+There are several methods to reconstruct a phylogeny - Parsimony, Neighbor-Joining, Maximum Likelihood, and Bayesian.
+Maximum likelihood methods rely on models of nucleotide or amino acid substitution.  There are many models - from simple to
+complex - and ideally we would want to test them all to see which fit our data best.  This can also be done with IQTree (see documentation
+or help page). Theoretically, an ML program would test every single possible tree given our data and find the one that maximizes the likelihood
+that our evolutionary model generated the data. However, the number of trees to be tested becomes inordinately large as you increase the number
+of taxa in your tree.  Thus, IQTree employs some shortcut methods (which we won't cover here) so as not to test every tree.</p>
+
+<p> The '-s' option specifies the input alignment and the '-m' option specifies the model.  We are using the general-time-reversible
+<a style='color:blue' href="https://evomics.org/resources/substitution-models/nucleotide-substitution-models/">substitution model</a>
+and a gamma distribution (G) with four rate categories to take into account that different positions may evolve at different rates.</p>
+</blockquote>
+<br>
+
+<li>View the phylogeny with <a style='color:blue' href="http://tree.bio.ed.ac.uk/software/figtree/">FigTree</a>.
+<blockquote>
+<p> We'll download this program to your computers and learn how to import tree files and associated metadata in class.
+We'll also demo how to download a file from your VM and the metadata file in the 'consensus_genomes' bucket from your GCP console to your computer.</p>
+<pre style='font-family:Times New Roman'>
+From the phylogeny, do you have any thoughts on the relatedness of these genomes?
+Do you think these cases are linked?
+</pre>
+</blockquote>
+<br>
+
+<li>Generate a SNP matrix from you final alignment with your installed version of snp-dists</li>
+<blockquote>
+<div id='h3'>
+snp-dists/snp-dists final.fasta > snp_matrix.txt
+</div>
+<pre style='font-family:Times New Roman'>
+Remember, since the snp-dists program isn't in your path, you have to specify the absolute path to where your version is located.
+A maxtrix is rather cumbersome to visualize.  Try the '-m' or molten option of snp-dists, which prints the pairwise genome comparisons as a tab delimited list
+</pre>
+<div id='h3'>
+snp-dists/snp-dists -m final.fasta > snp_pairwise.txt
+</div>
+<p>Parse this file to find your genomes of interest compared to each other. Does this help you reach a conclusion?</p>
+</blockquote>
+<br>
+
+<hr>
+<b>Additional references</b>
+<hr>
+<p><a style='color:blue' href='https://blog.scienceexchange.com/2013/05/techniques-series-next-generation-sequencing-technologies/'>Sequencing</a><p>
+<p><a style='color:blue' href='https://en.wikipedia.org/wiki/List_of_sequence_alignment_software'>Sequence alignment software list</a></p>
+<p><a style='color:blue' href='https://en.wikipedia.org/wiki/Sequence_assembly'>Sequence assembler list</a></p>
+<a id='fastqc'>
+<p><a style='color:blue' href='http://www.bioinformatics.babraham.ac.uk/projects/fastqc/'>Interpreting fastqc results</a></p>
+</a>
+<br>
+
+</body>
+</HTML>
