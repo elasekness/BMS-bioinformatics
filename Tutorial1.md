@@ -287,8 +287,7 @@ Use **`prefetch`** and **`fasterq-dump`** tools from the SRA toolkit to download
 > Notice that the conversion tool automatically saves forward and reverse reads to separate files.
 > Although we could use fasterq by itself, NCBI claims prefetch in combination with fasterq is faster.
 > More information on the SRA-toolkit and other frequently used tools can be found here: [SRA toolkit](https://trace.ncbi.nlm.nih.gov/Traces/sra/sra.cgi?view=toolkit_doc)
-
-
+>
 > **Note:** If your are having trouble obtaining the fna, faa, and gff files from NCBI, you can also copy them to your account on the VM from our GCP bucket
 > using the gsutil commands provided by GCP. Fastq files also available in the bucket in the same folder: 'reference_assembly.' However, you will need to
 > authenticate your account first in order to use the gsutil commands.
