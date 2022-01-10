@@ -1,5 +1,4 @@
 ## Tutorial 1
-<br>
 
 **Objective:** Successfully log on to Google Cloud Platform (GCP) Console and become familiar with working in a command-line (Linux) environment.
 
@@ -278,10 +277,8 @@ Notice this is a metatranscriptome, meaning this may not be a pure isolate of a 
 SRA submission).  The sequencing was performed on an Illumina MiniSeq and the reads are paired (i.e. there are Forward and Reverse reads for the same amplicon).
 We could download the two fastq files using the NCBI link provided or we could use faster tools provided by NCBI.
 
-<br>
 
 Use **`prefetch`** and **`fasterq-dump`** tools from the SRA toolkit to download the Wuhan-1 fastq files.
-
 
 `prefetch SRR10971381`
 `fasterq-dump SRR10971381`
@@ -295,9 +292,9 @@ Use **`prefetch`** and **`fasterq-dump`** tools from the SRA toolkit to download
 > **Note:** If your are having trouble obtaining the fna, faa, and gff files from NCBI, you can also copy them to your account on the VM from our GCP bucket
 > using the gsutil commands provided by GCP. Fastq files also available in the bucket in the same folder: 'reference_assembly.' However, you will need to
 > authenticate your account first in order to use the gsutil commands.
-
+>
 > `gsutil -m cp gs://wc-bms-bi-training-bucket/reference_assembly/GCF* .`
-
+>
 > We'll discuss this command more in class but essentially, we are copying all files that start with GCF from our GCP bucket to our current directory `.` .
 
 
