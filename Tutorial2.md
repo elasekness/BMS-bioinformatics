@@ -122,11 +122,11 @@ Each student will map the fastqs from one sample to the reference genome and gen
 
 | Student | Collection date | Sample name | County | Healthcare facility |
 | ------- | --------------- | ----------- | ------ | ------------------- |
-| Kathleen McCarthy | 2020-03-15 | IDR2000016084 | Westchester | Yes, staff |
-| Kayla Simanek | 2020-03-15 | IDR2000016115 | Westchester | Yes, staff |
-| Nicholas Keegan | 2020-03-15 | IDR2000016158 | Westchester | Yes, resident |
-| Rachel Lange | 2020-03-15 | IDR2000016600 | Westchester | Yes, resident |
-| Sharon Shaughnessy | 2020-03-19 | IDR2000024179 | Westchester | Yes, resident |
+| Kathleen McCarthy | 2020-03-15 | IDR1 | Westchester | Yes, staff |
+| Kayla Simanek | 2020-03-15 | IDR2 | Westchester | Yes, staff |
+| Nicholas Keegan | 2020-03-15 | IDR3 | Westchester | Yes, resident |
+| Rachel Lange | 2020-03-15 | IDR4 | Westchester | Yes, resident |
+| Sharon Shaughnessy | 2020-03-19 | IDR5 | Westchester | Yes, resident |
 
 
 
@@ -146,7 +146,7 @@ Before we can copy to and from our bucket, we need to authenticate our accounts 
 
 <br>
 
-	gsutil cp gs://wc-bms-bi-training-bucket/outbreak_fastqs/IDR2000024179*gz .
+	gsutil cp gs://wc-bms-bi-training-bucket/outbreak_fastqs/IDR1*gz .
 	
 > Make sure you substitute your IDR number in the command above. The ending period is important! Remember, you must specify a destination for your copied files, 
 > which is you current working directory in this case.
