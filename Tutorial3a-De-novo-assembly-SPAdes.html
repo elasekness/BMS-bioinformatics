@@ -133,7 +133,7 @@ Although short reads are typically not enough to scaffold contigs into chromosom
 29903 base pairs long.</p>
 <ol>
 <li value='1'>
-How many contigs are in the “scaffolds.fasta” file?</li>
+How many contigs are in the 'scaffolds.fasta' file?</li>
 <li>What is the average length of your scaffolds?  Hint: the length of each scaffold is given in the definition line.</li>
 <li>What is the N50 of your assembly (N50 is the value whereby 50% of an assembly is contained in contigs/scaffolds equal to or larger than this value)?</li>
 <li>What is the average coverage of your scaffolds? Hint: the average coverage of each scaffold is also given in the definition line.</li>
@@ -165,7 +165,7 @@ protein sequences, which would take the argument 'dbtype prot.'
 blastn -query wuhan_assembly_spades/scaffolds.fasta -db wuhan.fna -outfmt 6 -out spades.br
 </pre>
 <p>There are different flavors of blast depending on the query and database type (nucleotide vs. protein).
-The <code>blastn</code>' command specifies a nucleotide to nucleotide search.  We can modify the format of
+The <code>blastn</code> command specifies a nucleotide to nucleotide search.  We can modify the format of
 the output with the <code>-outfmt</code> option.  Here we are saving our output to a tab-delimited file called 'spades.br.'</p>
 
 <pre style='font-family:Times New Roman'>
