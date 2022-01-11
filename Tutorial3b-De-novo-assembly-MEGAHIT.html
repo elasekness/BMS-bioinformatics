@@ -53,18 +53,20 @@ What assembler would you choose based on this exercise?</pre>
 <hr>
 
 <li>Follow the instructions on the GitHub page for <a style='color:blue' href="https://github.com/voutcn/megahit">Megahit</a> to obtain a pre-built binary.</li>
-	<blockquote><p>Megahit should be installed in your home directory in a directory called 'MEGAHIT-1.2.9-Linux-x86_64-static.
+	<blockquote><p>Megahit should be installed in your home directory in a directory called <code>MEGAHIT-1.2.9-Linux-x86_64-static</code>.
 	if you <code>cd</code> into this directory, you'll see another directory called 'bin.' This is a standard place for compiled software to be located.
 	If you look in the 'bin' directory, you should see the Megahit executable.</p>
 	<p>Remember, since this program is installed locally, you will have to provide the absolute path to the program when invoking it.</p>
 	</blockquote>
 <br>
 
-<li>Use default parameters to assemble the metagenome with Megahit.</li>
+<li>Use default parameters to assemble the metagenome with MEGAHIT</li>
 <blockquote>
 <pre class="code">
 MEGAHIT-1.2.9-Linux-x86_64-static/bin/megahit -1 SRR10971381-trimmed_1.fastq -2 SRR10971381-trimmed_2.fastq -o wuhan_assembly_megahit
 </pre>
+<p>Notice how much faster MEGAHIT completed in comparison to SPAdes. Your contigs are located in the file called 'final.contigs.fa' in your
+output directory <code>wuhan_assembly_megahit</code>.
 <ol>
 <li value='1'>
 Generate the same summary statistics for your Megahit assembly as you did for your SPAdes assembly.</li>
@@ -78,15 +80,50 @@ Generate the same summary statistics for your Megahit assembly as you did for yo
 <br>
 
 <hr>
-<p><b>Compare the performance of SPAdes and Megahit with <a style='color:blue' href="https://github.com/ablab/quast">QUAST</a>.</p></b>
+<p><b>Compare the performance of SPAdes and Megahit with <a style='color:blue' href="https://github.com/ablab/quast">QUAST</a></p></b>
 <hr>
 
-<blockquote>
 <p>Quast is a genome (and metagenome) evaluation tool that can compare the quality of assemblies produced by different programs.
 It will output the number of large contigs for each assembly, the length of the longest one, the N50, and the number of genes predicted.
 When a reference assembly is provided, Quast will output additional statistics, such as the number of misassemblies, the percentage of the reference genome
 recovered, etc.</p>
+
+<li>Copy your contig files from your three assembly directories to the directory with your reference assembly and rename them something meaningful</li>
+<blockquote>
+<pre class="code">
+cp ~/wuhan_fastqs/wuhan_assembly_spades/scaffolds.fasta ~/reference_assembly/spades.fa
+cp ~/wuhan_fastqs/wuhan_assembly_shovill/contigs.fa ~/reference_assembly/shovill.fa
+cp ~/wuhan_fastqs/wuhan_assembly_megahit ~/reference_assembly/megahit.fa
+</pre>
+<p> This command assumes your assembly output directories are in a directory called 'wuhan_fastqs' and the reference assembly and annotation file for Wuhan-1
+from NCBI is in the directory 'reference_assembly.' The <code>~</code> symbolizes your home directory.</p>
 </blockquote>
+<br>
+
+<li>Run the Dockerized version of Quast to comare the three assemblies.</li>
+<blockquote>
+<pre class="code">
+cd wuhan_fastqs
+docker run --rm -v $(pwd):/data -w /data staphb/quast quast.py -r wuhan.fna -g GCF_009858895.2_ASM985889v3_genomic.gff spades.fa shovill.fa megahit.fa
+</pre>
+<p>Your results will be located in a directory called 'quast_results' in a subdirectory called 'latest.' Notice the summary report is given to you in multiple formats.</p>
+</blockquote>
+<br>
+
+<li>Download the html version of the results ('report.html') to your computer.</li>
+<blockquote>
+<p>The html report provides a nice visual of the results in table and figure formats. Because
+we provided a reference genome and a GFF annotation file, Quast compares the performance of
+all three assemblers in recovering a complete and accurate (misassemblies, INDELs, etc) Wuhan-1 genome
+as well as the number of complete genomic features.</p>
+<ol>
+<li value='1'>
+Which assembler performed best in recovering the Wuhan-1 genome?</li>
+<li>What characteristics would you want to see in a metagenome assembly?
+<li>Given those characteristics, which created a better metagenome assembly?</li>
+</ol>
+</blockquote>
+
 
 
 <br>
