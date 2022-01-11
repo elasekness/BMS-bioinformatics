@@ -14,7 +14,7 @@ software pulled from Docker. Finally, you will learn about GitHub and Docker for
 
 Our read data are in fastq format. Fastq files contain the quality score for each nucleotide in the read and each read has four lines associated with it:
 
-	>@SRR10971381.1 1 length=151
+	@SRR10971381.1 1 length=151
 	AGTCGATCAGCTGAGTACTAGTAGCATG
 	+
 	BBBCCCKKIBCCKKBIJDFFHHHIIJKK
