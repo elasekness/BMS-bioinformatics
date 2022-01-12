@@ -148,7 +148,7 @@ Also notice that the naming conventions for the contigs are much more manageable
 * Did Shovill recover the Wuhan genome?
 * What assembler would you choose based on this exercise?
 
-
+<br>
 
 ## Perform a metagenome assembly with MEGAHIT
 
@@ -240,7 +240,7 @@ Instead of changing the ownership of the fasta file, you could also change the n
 
 > We'll talk about the syntax of this command in class. The `\1` and escaped parentheses have special meaning.
 
-## Run Prokka with the 'Viruses' option for annotation mode
+Run Prokka with the 'Viruses' option for annotation mode.
 
 	docker run --rm -v $(pwd):/data -w /data staphb/prokka prokka --kingdom 'Viruses' --species 'SARS-CoV-2' --prefix 'IDRnumber' --outdir IDRnumber_annotation IDRnumber.fa
 
