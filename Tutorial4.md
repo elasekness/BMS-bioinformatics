@@ -83,5 +83,33 @@ Rename the PE fastq files something meaningful.
 	mv SRR12830234_1.fastq dap1_1.fastq
 	mv SRR12830234_2.fastq dap1_2.fastq
 	mv SRR12830237_1.fastq cont1_1.fastq
-	mv SRR12830237_1.fastq cont1_2.fastq
+	mv SRR12830237_2.fastq cont1_2.fastq
+
+## Clean your reads with TrimGalore
+
+These reads were generated on an Illumina NextSeq in a 2x50 bp format.
+You can process your PE fastqs one-by-one or you could execute a BASH for-loop to do the job for you.
+
+The long way:
+
+	trim_galore -q 30 --paired cont1_1.fastq cont1_2.fastq
+	trim_galore -q 30 --paired cont2_1.fastq cont2_2.fastq
+	trim_galore -q 30 --paired dap1_1.fastq dap1_2.fastq
+	trim_galore -q 30 --paired dap2_1.fastq dap2_2.fastq
+
+The short way:
+
+	ls *_1.fastq | cut -d "_" -f 1 > seqlist
+	for filn in `cat seqlist`; do trim_galore -q 30 --paired $filn"_1.fastq" $filn"_2.fastq"; done
+
+> Here, we are listing all R1 fastq files and cutting them on the underscore delimiter to take the first field, which is the
+> base name for each PE fastq file. We then save that output to a file called 'seqlist.'  You can `cat` the seqlist file to see the results.
+> The next command is the for loop.  Instead of looping through files one-by-one, we are looping through the 'seqlist' file line-by-line
+> to obtain the basename of each PE run. The back ticks represent a subprocess. The output of the subprocess command `cat` is being passed
+> to the for loop.  Thus, each basename in our 'seqlist' file becomes a variable.  We then use this basename to specify the R1 and R2 fastq files
+> by filling in the reminder of the unique part of each PE file's name.  For example, `$filn` will get interpreted as `cont1` and the file endings
+> "\_1.fastq" and "\_2.fastq" will be interpreted literally because of the quotation marks so that we get the full file names, 
+> 'cont1_1.fastq' and 'cont1_2.fastq'.
+
+
 
