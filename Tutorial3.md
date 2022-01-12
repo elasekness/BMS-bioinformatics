@@ -130,5 +130,85 @@ protein sequences, which would take the argument `dbtype prot`.
 * How similar is it to the reference?
 * What do all of the fields mean (use <code>blastn -help</code> to see the full list of blast options)?
 
+<br>
+
+## Assemble the same reads with Shovill
+
+	docker run --rm -v $(pwd):/data -w /data staphb/shovill shovill --R1 SRR10971381_1.fastq --r2 SRR10971381_2.fastq --trim --outdir wuhan_assembly_shovill
+
+> As mentioned previously, Shovill is a faster implementation of SPAdes. Notice how much faster Shovill ran even with all of our data!
+> We are using the `--trim` option to remove adapters but we could have started with out trimmed reads.
+> The one caveat is that Shovill doesn't have a metagenome mode.
+
+Briefly explore the Shovill assembly and its summary output to see how the program compares to SPAdes.
+
+The final contigs are in a file called 'contigs.fa' and are conveniently organized by descending length.
+Also notice that the naming conventions for the contigs are much more manageable (although the original name assigned by SPAdes is also included).
+
+* Did Shovill recover the Wuhan genome?
+* What assembler would you choose based on this exercise?
+
+
+
+## Perform a metagenome assembly with MEGAHIT
+
+
+	megahit -1 SRR10971381-trimmed_1.fastq -2 SRR10971381-trimmed_2.fastq -o wuhan_assembly_megahit
+
+> Notice how much faster MEGAHIT completed in comparison to SPAdes.
+> Your contigs are located in the file called 'final.contigs.fa' in your output directory 'wuhan_assembly_megahit'.
+
+* Generate the same summary statistics for your MEGAHIT assembly as you did for your SPAdes assembly.
+* Did all three assemblies recover the Wuhan-1 genome?
+* If so, are they similar lengths and coverage?
+* Other tools to try are: [Pangolin](https://pangolin.cog-uk.io/) and [Nextclade](https://clades.nextstrain.org/).
+
+<br>
+
+
+## Compare the performance of SPAdes, Shovill, and Megahit with [QUAST](https://github.com/ablab/quast)
+
+
+Quast is a genome (and metagenome) evaluation tool that can compare the quality of assemblies produced by different programs.
+It will output the number of large contigs for each assembly, the length of the longest one, the N50, and the number of genes predicted.
+When a reference assembly is provided, Quast will output additional statistics, such as the number of misassemblies, the percentage of the reference genome
+recovered, etc.
+
+Copy your contig files from your three assembly directories to the directory with your reference assembly and rename them something meaningful
+
+
+	cp ~/wuhan_fastqs/wuhan_assembly_spades/scaffolds.fasta ~/reference_assembly/spades.fa
+	cp ~/wuhan_fastqs/wuhan_assembly_shovill/contigs.fa ~/reference_assembly/shovill.fa
+	cp ~/wuhan_fastqs/wuhan_assembly_megahit ~/reference_assembly/megahit.fa
+
+> This command assumes your assembly output directories are in a directory called 'wuhan_fastqs' and the reference assembly and annotation file for Wuhan-1
+> from NCBI is in the directory 'reference_assembly.' The `~` symbolizes your home directory.
+
+<br>
+
+Run the Dockerized version of Quast to comare the three assemblies.
+
+	cd wuhan_fastqs
+	docker run --rm -v $(pwd):/data -w /data staphb/quast quast.py -r wuhan.fna -g GCF_009858895.2_ASM985889v3_genomic.gff spades.fa shovill.fa megahit.fa
+
+> Your results will be located in a directory called 'quast_results' in a subdirectory called 'latest.' 
+> Notice the summary report is given to you in multiple formats.
+
+<br>
+
+Download the html version of the results ('report.html') to your computer.
+
+The html report provides a nice visual of the results in table and figure formats. Because
+we provided a reference genome and a GFF annotation file, Quast compares the performance of
+all three assemblers in recovering a complete and accurate (misassemblies, INDELs, etc) Wuhan-1 genome
+as well as the number of complete genomic features.
+
+* Which assembler performed best in assembling a complete and accurate Wuhan-1 genome?
+* What characteristics would you want to see in a metagenome assembly?
+* Given those characteristics, which created a better metagenome assembly?
+
+<br>
+
+
 
 
