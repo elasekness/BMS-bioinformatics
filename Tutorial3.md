@@ -132,7 +132,7 @@ protein sequences, which would take the argument `dbtype prot`.
 
 <br>
 
-## Assemble the same reads with Shovill
+## Assemble the same reads with [Shovill](https://github.com/tseemann/shovill)
 
 	docker run --rm -v $(pwd):/data -w /data staphb/shovill shovill --R1 SRR10971381_1.fastq --r2 SRR10971381_2.fastq --trim --outdir wuhan_assembly_shovill
 
@@ -150,7 +150,7 @@ Also notice that the naming conventions for the contigs are much more manageable
 
 <br>
 
-## Perform a metagenome assembly with MEGAHIT
+## Perform a metagenome assembly with [MEGAHIT](https://github.com/voutcn/megahit)
 
 
 	megahit -1 SRR10971381-trimmed_1.fastq -2 SRR10971381-trimmed_2.fastq -o wuhan_assembly_megahit
