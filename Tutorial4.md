@@ -33,8 +33,8 @@ Open an R window on your computer by double-clicking on the application and foll
 
 ## Download the fastq files for our RNA-Seq analysis from the SRA
 
-We will be analyzing a dataset of S. aureus N315 cultures exposed to the antibiotic daptomycin at 4 ug/ml.
-Daptomycin is a cyclic lipopeptide which binds to the cytoplasmic membrane of S. aureus in a calcium-dependent manner,
+We will be analyzing a dataset of <i>Staphylococcus aureus</i> N315 cultures exposed to the antibiotic daptomycin at 4 ug/ml.
+Daptomycin is a cyclic lipopeptide which binds to the cytoplasmic membrane of <i>S. aureus</i> in a calcium-dependent manner,
 ultimately leading to membrane depolarization and cell death. Daptomycin non-susceptibility is most frequently associated
 with mutations in the multi-peptide resistance factor gene (mprF). The mprF gene encodes for lysyl-phosphatidylglycerol (LPG) synthetase,
 responsible for lysinilating phosphatidylglycerol (PG) and translocating it to the outer membrane.
@@ -43,15 +43,15 @@ which increases the net positive charge of the membrane and repels daptomycin.
 Mutations in the cardiolipin synthase gene (cls2) have also been observed in DAP-NS strains
 and might further alter membrane composition by increasing the ratio of cardiolipin to PG, thereby leaving fewer target sites for daptomycin.
 Other phenotypic changes that often appear in DAP-NS strains include increased cell wall thickening and changes in membrane fluidity
-that might prevent the antibiotic from accessing its target site. Thus we might also expect changes in expression in genes related
-to the cell wall and the cell membrane.
+that might prevent the antibiotic from accessing its target site. Thus we might also expect changes in gene expression for genes involved in 
+cell wall and/or the cell membrane homeostasis.
 
 There are two biological replicates for the treatment and the control, which you can access via the bioproject [PRJNA669520](https://www.ncbi.nlm.nih.gov/bioproject/?term=669520)
 by clicking on the SRA experiments link.
 
 Select the four experiments of interest
-* 4 g/ml daptomycin treated samle, grown in minimal media (SSM9PR)
-* 4 g/ml daptomycin treated samle, grown in minimal media (SSM9PR)
+* 4 ug/ml daptomycin treated samle, grown in minimal media (SSM9PR)
+* 4 ug/ml daptomycin treated samle, grown in minimal media (SSM9PR)
 * WT control treated with DMSO and grown in minimal media (SSM9PR)
 * WT control treated with DMSO and grown in minimal media (SSM9PR)
 
@@ -74,7 +74,7 @@ Make a new directory for this analysis, `cd` into it and download the fastq file
 	fasterq-dump SRR12830234
 	fasterq-dump SRR12830237
 
-Rename the PE fastq files something meaningful
+Rename the PE fastq files something meaningful.
 
 	mv SRR12830230_1.fastq dap2_1.fastq
 	mv SRR12830230_2.fastq dap2_2.fastq
