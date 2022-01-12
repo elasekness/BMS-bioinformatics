@@ -52,35 +52,26 @@ What assembler would you choose based on this exercise?</pre>
 <p><b>Perform a metagenome assembly with Megahit.</p></b>
 <hr>
 
-<li>Follow the instructions on the GitHub page for <a style='color:blue' href="https://github.com/voutcn/megahit">Megahit</a> to obtain a pre-built binary.</li>
-	<blockquote><p>Megahit should be installed in your home directory in a directory called <code>MEGAHIT-1.2.9-Linux-x86_64-static</code>.
-	if you <code>cd</code> into this directory, you'll see another directory called 'bin.' This is a standard place for compiled software to be located.
-	If you look in the 'bin' directory, you should see the Megahit executable.</p>
-	<p>Remember, since this program is installed locally, you will have to provide the absolute path to the program when invoking it.</p>
-	</blockquote>
-<br>
-
-<li>Use default parameters to assemble the metagenome with MEGAHIT</li>
+<li>Use default parameters to assemble the metagenome with MEGAHIT.</li>
 <blockquote>
 <pre class="code">
-MEGAHIT-1.2.9-Linux-x86_64-static/bin/megahit -1 SRR10971381-trimmed_1.fastq -2 SRR10971381-trimmed_2.fastq -o wuhan_assembly_megahit
+megahit -1 SRR10971381-trimmed_1.fastq -2 SRR10971381-trimmed_2.fastq -o wuhan_assembly_megahit
 </pre>
 <p>Notice how much faster MEGAHIT completed in comparison to SPAdes. Your contigs are located in the file called 'final.contigs.fa' in your
 output directory <code>wuhan_assembly_megahit</code>.
 <ol>
 <li value='1'>
-Generate the same summary statistics for your Megahit assembly as you did for your SPAdes assembly.</li>
-<li>Did both assemblies recover the Wuhan-1 genome? </li>
+Generate the same summary statistics for your MEGAHIT assembly as you did for your SPAdes assembly.</li>
+<li>Did all assemblers recover the Wuhan-1 genome? </li>
 <li>If so, are they similar lengths and coverage?</li>
-<li>Are both identical to Wuhan-1?</li>
-<li>Other tools to try in helping you evaluate the quality of your genomes are: <a style='color:blue' href="https://pangolin.cog-uk.io/">Pangolin</a>
-(also available as a Docker container on your VM) and <a style='color:blue' href='https://clades.nextstrain.org/'>Nextclade</a>.
+<li>Other tools to try are: <a style='color:blue' href="https://pangolin.cog-uk.io/">Pangolin</a>
+(also available as a Docker image on your VM) and <a style='color:blue' href='https://clades.nextstrain.org/'>Nextclade</a>.
 </ol>
 </blockquote>
 <br>
 
 <hr>
-<p><b>Compare the performance of SPAdes and Megahit with <a style='color:blue' href="https://github.com/ablab/quast">QUAST</a></p></b>
+<p><b>Compare the performance of SPAdes, Shovill, and MEGAHIT with <a style='color:blue' href="https://github.com/ablab/quast">QUAST</a></p></b>
 <hr>
 
 <p>Quast is a genome (and metagenome) evaluation tool that can compare the quality of assemblies produced by different programs.
