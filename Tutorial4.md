@@ -85,6 +85,8 @@ Rename the PE fastq files something meaningful.
 	mv SRR12830237_1.fastq cont1_1.fastq
 	mv SRR12830237_2.fastq cont1_2.fastq
 
+<br>
+
 ## Clean your reads with TrimGalore
 
 These reads were generated on an Illumina NextSeq in a 2x50 bp format.
@@ -107,9 +109,11 @@ The short way:
 > The next command is the for loop.  Instead of looping through files one-by-one, we are looping through the 'seqlist' file line-by-line
 > to obtain the basename of each PE run. The back ticks represent a subprocess. The output of the subprocess command `cat` is being passed
 > to the for loop.  Thus, each basename in our 'seqlist' file becomes a variable.  We then use this basename to specify the R1 and R2 fastq files
-> by filling in the reminder of the unique part of each PE file's name.  For example, `$filn` will get interpreted as `cont1` and the file endings
+> by filling in the reminder of the unique part of each PE file's name.  For example, `$filn` will get interpreted as 'cont1' and the file endings
 > "\_1.fastq" and "\_2.fastq" will be interpreted literally because of the quotation marks so that we get the full file names, 
 > 'cont1_1.fastq' and 'cont1_2.fastq'.
+
+<br>
 
 
 
