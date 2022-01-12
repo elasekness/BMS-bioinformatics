@@ -13,8 +13,8 @@ replicates is also important and most agree that at least three should be used. 
 to consider is [Schurch et al 2016](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4878611/). Finally, you will need
 to decide which tool to employ for estimating differential expression.  As with assemblers, there are many tools available for performing differential
 expression analyses.
-<br>
 
+<br>
 
 ## Download and install R on your computer
 
@@ -85,6 +85,8 @@ Rename the PE fastq files something meaningful.
 	mv SRR12830237_1.fastq cont1_1.fastq
 	mv SRR12830237_2.fastq cont1_2.fastq
 
+> The renamed fastqs are also available in our GCP bucket: gs//wc-bms-bi-training-bucket/rnaseq/fastq
+
 <br>
 
 ## Clean your reads with TrimGalore
@@ -115,5 +117,21 @@ The short way:
 
 <br>
 
+## Download a reference genome for _S. aureus_ N315
+
+Return to NCBI and search 'assembly' for 'Staphylococcus aureus N315.'
+
+> **Note** We previously searched genomes for SARS-CoV-2 and browsed a list of genomes to access the Wuhan-1 reference RefSeq ftp site.  Here we are taking an 
+> alternative route.
+
+Click on the link to the RefSeq FTP page, which is to the right on the for the _S. aureus_ N315 assembly page.
+
+Copy the genome assembly and annotation files to your VM.
+
+	curl -O "https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/009/645/GCF_000009645.1_ASM964v1/GCF_000009645.1_ASM964v1_genomic.fna.gz"
+	curl -O "https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/009/645/GCF_000009645.1_ASM964v1/GCF_000009645.1_ASM964v1_genomic.gff.gz"
+
+
+## Map your reads to the reference genome for _S. aureus_ N315
 
 
