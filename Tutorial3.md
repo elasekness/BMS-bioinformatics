@@ -203,11 +203,59 @@ we provided a reference genome and a GFF annotation file, Quast compares the per
 all three assemblers in recovering a complete and accurate (misassemblies, INDELs, etc) Wuhan-1 genome
 as well as the number of complete genomic features.
 
-* Which assembler performed best in assembling a complete and accurate Wuhan-1 genome?
+* Which assembler performed best in assembling the Wuhan-1 genome?
 * What characteristics would you want to see in a metagenome assembly?
 * Given those characteristics, which created a better metagenome assembly?
 
 <br>
+
+## Annotate your consensus SARS-CoV-2 genome with [Prokka](https://github.com/tseemann/prokka)
+
+We will use a program called 'Prokka' to annotate our consensus genomes that we generated in Tutorial 2. Prokka takes advantage of several other tools to make high-quality predictions for coding sequences, tRNAs, rRNAs, and CRISPRs. Prokka uses BLAST against well characterized protein databases as well as HMM (Hiden Markov Models) scans. Hidden Markov Models are probabilistic models about the identity of an amino acid/nucleotide at a certain position in a protein/gene generated from multi-sequence alignments.
+HMM based predictions can be particularly powerful in identifying distantly related homologs that a Blast search wouldn’t detect.
+<br>
+
+Run the dockerized version of Prokka in interactive mode to see the help menu.
+
+	docker run -it staphb/prokka
+
+> As you can see, there are many options associated with Prokka, including ways to customize the annotation output.
+> Some useful arguments include specifying the name of the locus tag, adding the genus and species names to the annotation files,
+> naming the output directory, and specifying the annotation mode - in this case it will be 'Viruses.'
+
+<br>
+
+Before running Prokka, change the ownership of your consensus genome fasta file and shorten the sequence name.
+
+	sudo chown root:your_username IDRnumber.fa
+
+> `chown` = change ownership. Since we generated our consensus genomes with a dockerized version of iVAR without changing the user, the fasta file belongs to 
+> 'root.' This means that we cannot modify the file.  We need to shorten the name of the definition line (or sequence name) because Prokkka will complain about
+>  anything longer than 20 characters.  Thus we must change the ownership of the file from root to us.  After you have changed the ownership of this file, you can 
+>  shorten the sequence name in Nano.
+
+Instead of changing the ownership of the fasta file, you could also change the name of the sequence with `sed` and write the output to a new file. You can first use `grep` to obtain the name of the sequence.
+
+	sed 's/Consensus_\(.*)_S.*/\1/' IDRnumber.fa > IDRnumber_modified.fa
+
+> We'll talk about the syntax of this command in class. The `\1` and escaped parentheses have special meaning.
+
+## Run Prokka with the 'Viruses' option for annotation mode
+
+	docker run --rm -v $(pwd):/data -w /data staphb/prokka prokka --kingdom 'Viruses' --species 'SARS-CoV-2' --prefix 'IDRnumber' --outdir IDRnumber_annotation IDRnumber.fa
+
+* Look at the output generated.
+* How many proteins were annotated?
+* Do those seem correct? How could you test this?
+* Do the coding sequences have the same coordinates as the reference genome? Hint: compare GFF files.
+
+## If there's time, annotate with [VADR](https://github.com/ncbi/vadr/wiki/Coronavirus-annotation#howto)
+
+As you can see, there are many ways to get the same answers!
+
+
+
+
 
 
 
