@@ -68,7 +68,7 @@ Assemble the metagenomic reads from our SRA download in Tutorial 1 with [SPAdes]
 
 	docker run --rm -v $(pwd):/data -w /data staphb/spades spades -1 downsampled-trimmed_1.fastq -2 downsampled-trimmed_2.fastq -o wuhan_assembly_spades/ --meta &
 
-**Note** Now that our VMs have additional RAM, we should be able to use all the reads. Below, we are running the SPAdes installed on our VM and foregoing the read error correction step to save time.
+**Note:** Now that our VMs have additional RAM, we should be able to use all the reads. Below, we are running the SPAdes installed on our VM and foregoing the read error correction step to save time.
 
 	spades --only-assembler -1 SRR10971381-trimmed_1.fq -2 SRR10971381-trimmed_2.fq -o wuhan_assembly_spades
 
@@ -76,7 +76,7 @@ Assemble the metagenomic reads from our SRA download in Tutorial 1 with [SPAdes]
 > SPAdes will perform error-correction prior to assembling or you can run without the error-correction step as we have done in the second example.
 >
 > **Note:** The ampersand specifies performing a job in the background. This returns your command-line prompt so that you can continue working.
-> Given the size of the library (8 GB!), assembly could take quite some time if we used all reads. You can see that your job is stil running by typing `top`,
+> Given the size of the library (16 GB!), assembly could take quite some time if we used all reads. You can see that your job is stil running by typing `top`,
 > which allows you to see the status of all jobs on your VM. But because SPAdes prints a lot of information to STDOUT, it's rather inconvenient to work
 > in this terminal.  You can start a new connection by selecting this option in the drop down menu that looks like a cog in the upper right corner of your terminal.
 
