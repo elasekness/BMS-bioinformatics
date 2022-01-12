@@ -116,7 +116,7 @@ protein sequences, which would take the argument `dbtype prot`.
 
 <br>
 
-## Blast your assembly to the Wuhan-1 genome.
+## Blast your assembly to the Wuhan-1 genome
 
 
 	blastn -query wuhan_assembly_spades/scaffolds.fasta -db wuhan.fna -outfmt 6 -out spades.br
