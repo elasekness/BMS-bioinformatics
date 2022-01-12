@@ -53,7 +53,7 @@ and the assembly algorithm (de bruijn graph, overlap layout consensus, etc.),
 all <i>de novo</i> genome assembly programs essentially rely on stringing together overlapping
 portions of reads into longer fragments called contigs (contiguous sequences).
 In turn, these contigs can be joined to generate scaffolds if you have paired-end reads (forward and reverse reads). Here
-we will attempt to recover the original Wuhan-1 genome, which was helped to identify SARS-CoV-2 as a novel Betacoronavirus.
+we will attempt to recover the original Wuhan-1 genome, which helped to identify SARS-CoV-2 as a novel Betacoronavirus.
 SPAdes and MEGAHIT are two of the most frequently employed assemblers for bacterial/viral genomes.  MEGAHIT was designed for metagenomes
 but can also work on single isolate libraries. Shovill is basically a faster adaptation of SPAdes.</p>
 <br>
@@ -87,8 +87,8 @@ seqtk sample -s100 SRR10971381-trimmed_1.fq 5000000 > SRR10971381-sub_1.fastq
 seqtk sample -s100 SRR10971381-trimmed_2.fq 5000000 > SRR10971381-sub_2.fastq
 </pre>
 <p><a style='color:blue' href="https://github.com/lh3/seqtk">Setqk</a> is like a swiss-army knife for manipulating fasta/fastq files.
-Two ensure that we randomly subsample the same reads from both R1 and R2 files (maintain the files as paired),
-we need to use the same starting seed (specified by the '-s' argument). Subsampling is necessary because our fastq files are over 8 Gb in size (>28 million reads)!
+To ensure that we randomly subsample the same reads from both R1 and R2 files (maintain the files as paired),
+we need to use the same starting seed (specified by the <code>-s</code> argument). Subsampling is necessary because our fastq files are over 8 Gb in size (>28 million reads)!
 We don't have enough memory on our VMs to run a full assembly.</p>
 
 <p>Since this was a metatranscriptome from a human subject, we might expect the majority of our reads to be human-derived. We
