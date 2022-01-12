@@ -11,7 +11,7 @@ Perform reference-based assemblies of SARS-CoV-2 genomes and identify possible t
 Perform de novo assemblies of the Wuhan-1 SARS-CoV-2 dataset and compare the results.
 
 ### Tutorial 4
-Perform an RNA-Seq analysis of S. aureus N315 exposed to the antibiotic daptomycin.
+Perform an RNA-Seq analysis of <i>Staphylococcus aureus</i> N315 exposed to the antibiotic daptomycin.
 
 ### Tutorial 5
 Learn to code in Python.
