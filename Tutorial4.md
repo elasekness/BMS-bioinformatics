@@ -134,4 +134,14 @@ Copy the genome assembly and annotation files to your VM.
 
 ## Map your reads to the reference genome for _S. aureus_ N315
 
+	gzip -d *gz
+	cp GCF_000009645.1_ASM964v1_genomic.fna sa.fna
+	bwa index sa.fna 
+	for filn in `cat seqlist`; do bwa mem sa.fna $filn"_1_val_1.fq" $filn"_2_val_2.fq" | samtools sort | samtools view -F 4 -o $filn".sorted.bam"; done
+	
+> We are decompressing our assebmly and annotation file, copying the assembly file to a shorter name, indexing it for `bwa`, running `bwa` to map our reads, 
+> then using `samtools` to sort our alignment and convert it to bam format, while only including reads that aligned to our reference genome.
+
+## Count the number of reads that overlap coding sequences
+
 
