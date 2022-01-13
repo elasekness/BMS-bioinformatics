@@ -143,6 +143,7 @@ Copy the genome assembly and annotation files to your VM. We'll also want the co
 	
 > We are decompressing our assebmly and annotation file, copying the assembly file to a shorter name, indexing it for `bwa`, running `bwa` to map our reads, 
 > then using `samtools` to sort our alignment and convert it to bam format, while only including reads that aligned to our reference genome.
+> BAM alignments are also located in our GCP bucket: wc-bms-bi-training-bucket/rnaseq/bams
 
 <br>
 
