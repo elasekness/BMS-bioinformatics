@@ -160,7 +160,7 @@ In this experiment, we are only interested in the expression of genes but our gf
 
 ## Quantify transcripts with Salmon
 
-Salmon is a 'wicked fast' program that allows the direct quantification of reads against a transcriptome (no need for SAM or BAM files).  Because we don't have a transcriptome (we did not perform a de-novo assembly of our reads), we'll use the coding sequences that we downloaded as a substitute.
+[Salmon](https://combine-lab.github.io/salmon/) is a 'wicked fast' program that allows the direct quantification of reads against a transcriptome (no need for SAM or BAM files).  Because we don't have a transcriptome (we did not perform a de-novo assembly of our reads), we'll use the coding sequences that we downloaded as a substitute.
 
 Copy the cds file and name it something simple.
 
