@@ -156,6 +156,38 @@ First, we'll need to index our sorted bam files. You can use a for loop to autom
 
 In this experiment, we are only interested in the expression of genes but our gff file contains annotation for genes and their coding sequences, as well as other genomic elements (tRNAs, rRNAs, pseudogenes). Therefore it would be easier to convert our gff file to a bed file that only contains the genomic intervals of interest.
 
+	grep -P "\tCDS\t" GCF_000009645.1_ASM964v1_genomic.gff | cut -f 1,4,5 | grep -v "NC_003140" > sa.bed
+	
+> The `P` argument indicates the use of regular expressions in your `grep` command.  Here we are searching for all lines that have 'CDS' pre- and pro-ceeded by 
+> a tab. We are then cutting the first,fourth, and fifth fields of the output, which correspond to the genome name and the coding sequence coordinates.  
+> The _S. aureus_ genome also contains a plasmid.  Our final `grep` command specifies to exclude any lines that contain the plasmid accession number.
+
+Perform the read count, finally.
+
+	multiBamCov -bams cont1.sorted.bam cont2.sorted.bam dap1.sorted.bam dap2.sorted.bam -bed sa.bed > sa-bwa.counts.txt
+
+> The output is saved as a tab-delimited file, where each line contains information for our genomic intervals of interest (CDSs).
+> The first field is the genome accession number, followed by the CDs coordinates, and the read counts for the bam files in the order
+> you specified in your `multiBamCov` command.
+> With a few adjustments, the output of this command can be used as the count matrix for our DESeq2 analysis.
+
+Convert the genome accession numbers on each line back to the coding sequence name (names must be unique for downstream analyses) and
+elminate the CDS coordinates.
+
+	grep -P "\tCDS\t" GCF_000009645.1_ASM964v1_genomic.gff | cut -f 9 | cut -d "=" -f 3 | sed "s/gene-SA_//" | sed "s/;.*//" > sa_tags.txt
+
+> This command is parsing our GFF file to return only the gene name or locus tag associated with our coding sequences.
+
+Download the read count file to your computer if you have R installed.  You can also use the command-line version of R on our VMs.
+
+<br>
+
+## Follow the demo in class for a brief introduction to R and DESeq2
+
+We will now perform our differential expression analyses in R using DESeq2. There are several ways to import data into DESeq2 but we will follow the 
+instructions for importing a count matrix. After we have imported are data into R, the basic commands will be:
+
+
 
 
 ## Quantify transcripts with Salmon
@@ -191,7 +223,13 @@ Quantify transcript expression.
 * Was this considerably faster and simpler than aligning with BWA?
 * Notice how we don't need additional steps to generate a BAM file and then extrat read counts from it.
 * Look at the TSV files for your libraries (basename.sf).  You are given both TPM (Transcripts Per Million) and raw read count quantifications.
+* The multiBamCov command allows you to put readcounts from multiple bam files into the same file but Salmon outputs these to separate files.
 
+## Perform a DESeq2 analysis with your Salmon-quantified reads.
 
+* Are the number of DEGs the same between the BWA method and Salmon?
+* Did they find similar read counts for your coding sequences?
+* Are the DE genesets the same?
+* Which method do you prefer?
 	
 
