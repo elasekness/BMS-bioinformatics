@@ -215,6 +215,11 @@ instructions for importing a count matrix. After we have imported are data into 
 > The DESeq command will be discussed more in class.
 > If you're working on your computer, you can make a 'ColData.txt' file in Excel.  If you're working on our VMs, you can make the same table in `nano`.
 
+Perform a PCA to examine the quality of your replicates.
+
+	rld<- rlogTransformation(dds, blind=TRUE)
+	plotPCA(rld, intgroup="Condition")
+
 <br>
 
 ## Quantify transcripts with Salmon
