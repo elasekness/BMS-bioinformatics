@@ -147,8 +147,12 @@ Copy the genome assembly and annotation files to your VM.
 
 ## Count the number of reads that overlap coding sequences
 
-We can use the function `multiBamCov` from the package `bedtools` to count the number of reads that overlap genic regions. `multiBamCov` requires the bam file as well as the coordinates of your genes in a bed format. You can create a bed file from the gff file.
+We can use the function `multiBamCov` from the package [bedtools](https://github.com/arq5x/bedtools2) to count the number of reads that overlap genic regions. The `multiBamCov` function requires the bam file as well as the coordinates of your genes in a bed or gff format.
 
+First, we'll need to index our sorted bam files. You can use a for loop to automate the process.
 
+	for filn in *sorted.bam; do samtools index $filn; done
+
+In this experiment, we are only interested in the expression of genes but our gff file contains annotation for genes and their coding sequences, as well as other genomic elements (tRNAs, rRNAs, pseudogenes). Therefore it would be easier to convert our gff file to a bed file that only contains the genomic intervals of interest.
 
 
