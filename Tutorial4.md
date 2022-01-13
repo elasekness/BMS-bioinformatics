@@ -203,12 +203,11 @@ instructions for importing a count matrix. After we have imported are data into 
 
 If you're working on your computer, you can make a 'ColData.txt' file in Excel.  If you're working on our VMs, you can make the same table in `nano`.
 
-|   | Condition |
-| _ | _________ |
-| cont1 | control |
-| cont2 | control |
-| dap1 | treated |
-| dap2 | treated |
+        Condition <br>
+cont1   control <br>
+cont2   control <br>
+dap1    treated <br>
+dap2    treated <br>
 
 
 ## Quantify transcripts with Salmon
