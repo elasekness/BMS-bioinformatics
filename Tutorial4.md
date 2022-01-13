@@ -201,6 +201,16 @@ instructions for importing a count matrix. After we have imported are data into 
 
 
 
+If you're working on your computer, you can make a 'ColData.txt' file in Excel.  If you're working on our VMs, you can make the same table in `nano`.
+
+|	| Condition |
+| _____ | _________ |
+| cont1 | control |
+| cont2 | control |
+| dap1 | treated |
+| dap2 | treated |
+
+
 ## Quantify transcripts with Salmon
 
 [Salmon](https://combine-lab.github.io/salmon/) is a 'wicked fast' program that allows the direct quantification of reads against a transcriptome (no need for SAM or BAM files).  Because we don't have a transcriptome (we did not perform a de-novo assembly of our reads), we'll use the coding sequences that we downloaded as a substitute.
