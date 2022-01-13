@@ -85,7 +85,7 @@ Rename the PE fastq files something meaningful.
 	mv SRR12830237_1.fastq cont1_1.fastq
 	mv SRR12830237_2.fastq cont1_2.fastq
 
-> The renamed fastqs are also available in our GCP bucket: gs//wc-bms-bi-training-bucket/rnaseq/fastq
+> **Note:** The renamed fastqs are also available in our GCP bucket: gs//wc-bms-bi-training-bucket/rnaseq/fastq
 
 <br>
 
@@ -143,7 +143,7 @@ Copy the genome assembly and annotation files to your VM. We'll also want the co
 	
 > We are decompressing our assebmly and annotation file, copying the assembly file to a shorter name, indexing it for `bwa`, running `bwa` to map our reads, 
 > then using `samtools` to sort our alignment and convert it to bam format, while only including reads that aligned to our reference genome.
-> BAM alignments are also located in our GCP bucket: wc-bms-bi-training-bucket/rnaseq/bams
+> **Note:** BAM alignments are also located in our GCP bucket: wc-bms-bi-training-bucket/rnaseq/bams
 
 <br>
 
@@ -175,9 +175,19 @@ Perform the read count, finally.
 Convert the genome accession numbers on each line back to the coding sequence name (names must be unique for downstream analyses) and
 elminate the CDS coordinates.
 
-	grep -P "\tCDS\t" GCF_000009645.1_ASM964v1_genomic.gff | cut -f 9 | cut -d "=" -f 3 | sed "s/gene-SA_//" | sed "s/;.*//" > sa_tags.txt
+	grep -P "\tCDS\t" GCF_000009645.1_ASM964v1_genomic.gff | grep -v "NC_003140" | cut -f 9 | cut -d "=" -f 3 | sed "s/gene-SA_//" | sed "s/;.*//" > 		sa_tags.txt
 
-> This command is parsing our GFF file to return only the gene name or locus tag associated with our coding sequences.
+> This command is parsing our GFF file to return only the gene name or locus tag associated with our coding sequences. 
+> However, the locus tag 'RS04035' is actually listed twice in our file.  We can edit one of the duplicate names in nano so that it is unique.
+> `Ctrl-w` in nano allows you to perform a search.
+
+	paste sa_tags.txt sa-bwa.counts.txt | cut -f 1,5-8 > sa-bwa.countsR.txt 
+
+> This command is attaching our locus tag names to the read count data and eliminating the fields we don't need for our DESeq2 analysis.
+> `paste` pastes two files side-by-side with a tab in between them.
+> Add headers to your 'sa-bwa.countsR.txt' file and it's ready for import into R!
+> **Note:** 'sa-bwa.countsR.txt' is also in our GCP bucket: gs://wc-bms-bi-training-bucket/rnaseq/readcounts
+
 
 Download the read count file to your computer if you have R installed.  You can also use the command-line version of R on our VMs.
 
