@@ -131,6 +131,7 @@ Copy the genome assembly and annotation files to your VM.
 	curl -O "https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/009/645/GCF_000009645.1_ASM964v1/GCF_000009645.1_ASM964v1_genomic.fna.gz"
 	curl -O "https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/009/645/GCF_000009645.1_ASM964v1/GCF_000009645.1_ASM964v1_genomic.gff.gz"
 
+<br>
 
 ## Map your reads to the reference genome for _S. aureus_ N315
 
@@ -142,6 +143,12 @@ Copy the genome assembly and annotation files to your VM.
 > We are decompressing our assebmly and annotation file, copying the assembly file to a shorter name, indexing it for `bwa`, running `bwa` to map our reads, 
 > then using `samtools` to sort our alignment and convert it to bam format, while only including reads that aligned to our reference genome.
 
+<br>
+
 ## Count the number of reads that overlap coding sequences
+
+We can use the function `multiBamCov` from the package `bedtools` to count the number of reads that overlap genic regions. `multiBamCov` requires the bam file as well as the coordinates of your genes in a bed format. You can create a bed file from the gff file.
+
+
 
 
