@@ -126,10 +126,11 @@ Return to NCBI and search 'assembly' for 'Staphylococcus aureus N315.'
 
 Click on the link to the RefSeq FTP page, which is to the right on the for the _S. aureus_ N315 assembly page.
 
-Copy the genome assembly and annotation files to your VM.
+Copy the genome assembly and annotation files to your VM. We'll also want the coding sequences for an alternative approach to read quantification.
 
 	curl -O "https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/009/645/GCF_000009645.1_ASM964v1/GCF_000009645.1_ASM964v1_genomic.fna.gz"
 	curl -O "https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/009/645/GCF_000009645.1_ASM964v1/GCF_000009645.1_ASM964v1_genomic.gff.gz"
+	curl -O "https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/009/645/GCF_000009645.1_ASM964v1/GCF_000009645.1_ASM964v1_cds_from_genomic.fna.gz"
 
 <br>
 
@@ -155,4 +156,42 @@ First, we'll need to index our sorted bam files. You can use a for loop to autom
 
 In this experiment, we are only interested in the expression of genes but our gff file contains annotation for genes and their coding sequences, as well as other genomic elements (tRNAs, rRNAs, pseudogenes). Therefore it would be easier to convert our gff file to a bed file that only contains the genomic intervals of interest.
 
+
+
+## Quantify transcripts with Salmon
+
+Salmon is a 'wicked fast' program that allows the direct quantification of reads against a transcriptome (no need for SAM or BAM files).  Because we don't have a transcriptome (we did not perform a de-novo assembly of our reads), we'll use the coding sequences that we downloaded as a substitute.
+
+Copy the cds file and name it something simple.
+
+	cp GCF_000009645.1_ASM964v1_cds_from_genomic.fna sa_cds.fna
+
+If you look at the definition lines for the coding sequences, you'll see that the names are quite long and start with 'lcl|.' Let's remove that from all the definition lines to make things a bit cleaner.
+
+	sed "s/lcl|//" sa_cds.fna | grep ">" | head
+	sed -i "s/lcl|//" sa_cds.fna
+	
+> First check to see that the substitution command worked as you intended.
+> Then make the replacement. The `-i` indicates that sed should make the substitutions in place.
+
+Index the coding sequence file.
+
+	salmon index -t sa_cds.fna -i salmon_index
+	
+> If you `ls` your directory, you'll see that salmon has put the index files to your 'transcriptome' in a sub-directory called 'salmon_index'
+
+Quantify transcript expression.
+
+	for filn in `cat seqlist`; do salmon quant -i salmon_index -l A -1 $filn"_1_val_1.fq" -2 $filn"_2_val_2.fq" --validateMappings -o "salmon_quant/"$filn; done
+	
+> The `quant` command allows direct quantification of reads agains the 'transcriptome' index and will output the results into a directory called 'salmon_quant.'
+> The TSV files for each library will be in a subdirectory named by the basename of the file.  The `-l` option specifies the automatic detection of the 
+> library type.  The `--validateMappings` option is the recommended default.  It essentially checks that the mappings are plausible enough to be quantified.
+
+* Was this considerably faster and simpler than aligning with BWA?
+* Notice how we don't need additional steps to generate a BAM file and then extrat read counts from it.
+* Look at the TSV files for your libraries (basename.sf).  You are given both TPM (Transcripts Per Million) and raw read count quantifications.
+
+
+	
 
