@@ -215,7 +215,9 @@ instructions for importing a count matrix. After we have imported are data into 
 > The DESeq command will be discussed more in class.
 > If you're working on your computer, you can make a 'ColData.txt' file in Excel.  If you're working on our VMs, you can make the same table in `nano`.
 
-Perform a PCA to examine the quality of your replicates.
+<br>
+
+Perform a PCA to examine the quality of your replicates
 
 	rld<- rlogTransformation(dds, blind=TRUE)
 	plotPCA(rld, intgroup="Condition")
@@ -251,6 +253,13 @@ Quantify transcript expression.
 > The `quant` command allows direct quantification of reads agains the 'transcriptome' index and will output the results into a directory called 'salmon_quant.'
 > The TSV files for each library will be in a subdirectory named by the basename of the file.  The `-l` option specifies the automatic detection of the 
 > library type.  The `--validateMappings` option is the recommended default.  It essentially checks that the mappings are plausible enough to be quantified.
+
+Combine read counts from each sf file and change the headers in `nano`.
+
+	cd salmon_quant
+	paste */quant.sf | cut -f 1,5,10,15,20 > sa-salmon.countsR.txt
+	
+> **Note:** This file is also in our GCP bucket: gs://wc-bms-bi-training-bucket/rnaseq/readcounts
 
 * Was this considerably faster and simpler than aligning with BWA?
 * Notice how we don't need additional steps to generate a BAM file and then extrat read counts from it.
