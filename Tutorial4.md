@@ -198,12 +198,24 @@ Download the read count file to your computer if you have R installed.  You can 
 We will now perform our differential expression analyses in R using DESeq2. There are several ways to import data into DESeq2 but we will follow the 
 instructions for importing a count matrix. After we have imported are data into R, the basic commands will be:
 
+	R
+	library(DESeq2)
+	countsTable = read.table("sa-bwa.countsR.txt", header=T, sep="\t", row.names=1)
+	ColData = read.table("ColData.txt", header=T, sep="\t", row.names=1)
+	dds <- DESeqDataSetFromMatrix(countData = countsTable, colData = ColData, design = ~ Condition)
+	dds <- dds[rowSums(counts(dds)) >100, ]
+	dds <- DESeq(dds)
+	res <- results(dds, contrast=c("Condition", "treated", "control"))
+	write.table(dds, file='sa-bwa_deseq.txt', sep='\t')
 
+> Here we are importing both our read count table and a table called ColData, which we must create.  This contains information on which columns in our read
+> count table are controls and which are treatments. Both of these are used to create the DESeq2 dataset 'dds.' Note that un-normalized read counts 
+> should be used as DESeq2 will correct for differences in library size. We also need to specify a design, or which variables to fit in our model and test for
+> differential expression (DE). Here we are testing the 'Condition' (treated vs. control) on the effects of gene expression.
+> The DESeq command will be discussed more in class.
+> If you're working on your computer, you can make a 'ColData.txt' file in Excel.  If you're working on our VMs, you can make the same table in `nano`.
 
-
-If you're working on your computer, you can make a 'ColData.txt' file in Excel.  If you're working on our VMs, you can make the same table in `nano`.
-
-
+<br>
 
 ## Quantify transcripts with Salmon
 
