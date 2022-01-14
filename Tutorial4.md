@@ -226,6 +226,7 @@ Perform a PCA to examine the quality of your replicates
 
 * How many DEGs are there with an adjusted P-value <= 0.05?
 * Reduce the number of DEGs by considering only those with a abs(log2fold) change >= 2.
+* Are any associated with cell wall or cell membrane homeostasis? You can perform some clever parsing and BASH scripting to associate your DEGs with their functional descriptions in the gff file.
 
 <br>
 
