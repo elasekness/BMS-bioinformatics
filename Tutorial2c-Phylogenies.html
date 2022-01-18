@@ -58,7 +58,7 @@ relationships among your genomes.  We can create a SNP matrix after aligning our
 <hr>
 
 <p>This is a good opportunity to become familiar with GitHub - a repository for code, workflows, and associated data. GitHub is the source for much of the software
-we are using and has become the default location for depositing code. There are often many ways to install software and the type of
+we are using. There are often many ways to install software and the type of
 installation you perform will depend on your operating system (if Linux – the flavor of Linux you are using), what other dependencies you have installed or
 need installed (including a compiler), and the options for installation provided by the developer. Some software can be downloaded as a pre-compiled binary, which
 should require no further steps from you to work if you have downloaded the appropriate binary for your OS. And many bioinformatics programs can be installed with
@@ -72,11 +72,9 @@ The caveat is you that need sudo privileges to install the software system-wide 
 <blockquote>
 <pre class="code">
 git clone https://github.com/tseemann/snp-dists.git
+cd snp-dists
+make
 </pre>
-What did this do? Is the executable installed locally or globally?
-</blockquote>
-<li> cd to the snp-dists directory and type 'make'</li>
-<blockquote>
 What did this do? You should see that an executable called 'snp-dists' was compiled by the 'make' command.  Executables are conveniently colored green on our VM.
 We could move this to a place that's in our PATH (such as /usr/local/bin) so that we'd only have to type the 'snp-dists' command when we want to run the program
 but this also requires sudo privileges (and the executable is already there so don't try this).  Or we can simply point the VM to the location of our snp-dists program
@@ -92,15 +90,14 @@ when we want to run it.
 <blockquote>
 <pre class="code">
 gsutil cp IDRnumber.fa gs://wc-bms-bi-training-bucket/consensus_genomes
+gsutil gs://wc-bms-bi-training-bucket/consensus_genomes/*fa .
 </pre>
 <p>Note that there was an additional fasta file in this bucket called 'additional_genomes.fa' that you have copied over.  These
 are contextual sequences to help us determine whether the genomes from our investigation are linked.
 The contextual sequences were collected from the same time period as our genomes as well as from the same and neighboring
 counties as where our specimens were collected. These genomes were obtained from <a style='color:blue' href="https://www.gisaid.org/">GISAID</a>,
 which has become the global standard for depositing SARS-CoV-2 genomes and associated metadata.</p>
-<pre class="code">
-gsutil -m cp gs://wc-bms-bi-training-bucket/consensus_genomes/consensus_genomes/*fa .
-</pre>
+
 <p>Since you are copying all fasta files, the copy of your fasta file in your account will simply be overwritten.</p>
 </blockquote>
 <br>
@@ -126,12 +123,12 @@ your command-line skills.</p>
 </blockquote>
 <br>
 
-<li>Reconstruct a phylogeny with your final alignment with IQTree.</li>
+<li>Reconstruct a phylogeny with your final alignment in IQTree.</li>
 <blockquote>
 <pre class="code">
 iqtree -s final.fasta -m GTR+G4
 </pre>
-<p>IQTree is a program for rapidly generating a maximum likelihood (ML) tree for hundreds to thousands of sequences.
+<p><a style='color:blue' href="http://www.iqtree.org/">IQTree</a> is a program for rapidly generating a maximum likelihood (ML) tree for hundreds to thousands of sequences.
 There are several methods to reconstruct a phylogeny - Parsimony, Neighbor-Joining, Maximum Likelihood, and Bayesian.
 Maximum likelihood methods rely on models of nucleotide or amino acid substitution.  There are many models - from simple to
 complex - and ideally we would want to test them all to see which fit our data best.  This can also be done with IQTree (see documentation
@@ -145,30 +142,33 @@ and a gamma distribution (G) with four rate categories to take into account that
 </blockquote>
 <br>
 
-<li>View the phylogeny with <a style='color:blue' href="http://tree.bio.ed.ac.uk/software/figtree/">FigTree</a>.
+<li>View the phylogeny ('final.fasta.treefile') with <a style='color:blue' href="http://tree.bio.ed.ac.uk/software/figtree/">FigTree</a>.
 <blockquote>
 <p> We'll download this program to your computers and learn how to import tree files and associated metadata in class.
 We'll also demo how to download a file from your VM and the metadata file in the 'consensus_genomes' bucket from your GCP console to your computer.</p>
 <pre style='font-family:Times New Roman'>
-From the phylogeny, do you have any thoughts on the relatedness of these genomes?
-Do you think these cases are linked?
+Do you think these genomes are part of the same transmission chain?
+Which cases does the phylogeny support as being linked or not linked?
 </pre>
 </blockquote>
 <br>
 
-<li>Generate a SNP matrix from you final alignment with your installed version of snp-dists</li>
+<li>Generate a SNP matrix from you final alignment with your installed version of <code>snp-dists</code></li>
 <blockquote>
 <pre class="code">
 snp-dists/snp-dists final.fasta > snp_matrix.txt
 </pre>
 <pre style='font-family:Times New Roman'>
-Remember, since the <code>snp-dists</code> program isn't in your path, you have to specify the absolute path to where your version is located.
-A maxtrix is rather cumbersome to visualize.  Try the <code>-m</code> or molten option of snp-dists, which prints the pairwise genome comparisons as a tab delimited list
+Remember, since the <code>snp-dists</code> program isn't in your path, you have to specify the path to where your version is located.
+A maxtrix is rather cumbersome to visualize.  Try the <code>-m</code> or molten option of snp-dists, which prints the pairwise genome comparisons as a tab delimited list.
 </pre>
 <pre class="code">
 snp-dists/snp-dists -m final.fasta > snp_pairwise.txt
 </pre>
-<p>Parse this file to find your genomes of interest compared to each other. Does this help you reach a conclusion?</p>
+<pre style='font-family:Times New Roman'>
+Parse this file to find your genomes of interest compared to each other.
+Parse this file to find the average SNP difference among your genomes and all genomes.
+Does this help you reach a conclusion? Why or why not? </pre>
 </blockquote>
 <br>
 
