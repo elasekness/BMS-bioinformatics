@@ -269,7 +269,7 @@ Combine read counts from each sf file and change the headers in `nano`.
 
 * Was this considerably faster and simpler than aligning with BWA?
 * Notice how we don't need additional steps to generate a BAM file and then extract read counts from it.
-* Look at the TSV files for your libraries (basename.sf).  You are given both TPM (Transcripts Per Million) and raw read count quantifications.
+* Look at the TSV files for your libraries (salmon_quant/basename/quant.sf).  You are given both TPM (Transcripts Per Million) and raw read count quantifications.
 * The multiBamCov command allows you to put readcounts from multiple bam files into the same file but Salmon outputs these to separate files.
 
 ## Perform a DESeq2 analysis with your Salmon-quantified reads
