@@ -122,11 +122,11 @@ Each student will map the fastqs from one sample to the reference genome and gen
 
 | Student | Collection date | Sample name | County | Healthcare facility |
 | ------- | --------------- | ----------- | ------ | ------------------- |
-| Kathleen McCarthy | 2020-03-15 | IDR1 | Westchester | Yes, staff |
-| Kayla Simanek | 2020-03-15 | IDR2 | Westchester | Yes, staff |
-| Nicholas Keegan | 2020-03-15 | IDR3 | Westchester | Yes, resident |
-| Rachel Lange | 2020-03-15 | IDR4 | Westchester | Yes, resident |
-| Sharon Shaughnessy | 2020-03-19 | IDR5 | Westchester | Yes, resident |
+| Student1 | 2020-03-15 | IDR1 | Westchester | Yes, staff |
+| Student2 | 2020-03-15 | IDR2 | Westchester | Yes, staff |
+| Student3 | 2020-03-15 | IDR3 | Westchester | Yes, resident |
+| Student4 | 2020-03-15 | IDR4 | Westchester | Yes, resident |
+| Student5 | 2020-03-19 | IDR5 | Westchester | Yes, resident |
 
 
 
@@ -197,6 +197,8 @@ Align your reads to the reference genome with BWA, pipe the output to samtools t
 > Here we are piping output to **`samtools`** twice - once to sort the reads and the next time to convert the output to binary format (SAM to BAM) and save
 > that to a file with a '.sorted.bam' ending. The **`-F 4`** flag specifies that samtools should not write unaligned reads to the bam file.
 
+<br>
+
 Check the alignment quality with samtools 'flagstat' option.
 
 	samtools flagstat IDRnumber.sorted.bam
@@ -265,6 +267,97 @@ take information piped to it from STDOUT. Make sure that the parameters values a
 Make a consensus genome with iVar.
 
 	samtools mpileup -aa --reference wuhan.fna IDRnumber.sorted2.bam | docker run -i --rm -v $(pwd):/data -w /data staphb/ivar ivar consensus -t 0.75 -m 50 -t 0.90 -m 50 -n N -p IDRnumber
+
+<br>
+
+## Evaluate whether your genomes represent viruses from the same transmission chain
+<br>
+
+Now that we have our consensus genomes, we'll want to compare them to others from the facility outbreak as well as to those from NYS and even other states/countries from the same time period. A good place to start is to create a multi-sequence alignment, which you will use to generate a phylogeny.  The phylogeny will help you visualize the relationships among your genomes. We can create SNP matrix as well. This would allow us to quickly see how different our genomes are from each other although information regarding relationships is lost.
+
+This is a good opportunity to become familiar with GitHub - a repository for code, workflows, and associated data. GitHub is the source for much of the software we are using. There are often many ways to install software and the type of installation you perform will depend on your operating system (if Linux – the flavor of Linux you are using), what other dependencies you have installed or need installed (including a compiler), and the options for installation provided by the developer. Some software can be downloaded as a pre-compiled binary, which should require no further steps from you to work if you have downloaded the appropriate binary for your OS. And many bioinformatics programs can be installed with the apt-get commands if you are working in Ubuntu (we are!).  For example, 'sudo apt-get install prokka' would search a database of available packages and install the annotation program 'prokka' as well as all of its many dependencies, and put the software in the appropriate place on our VM (in our path). The caveat is you that need sudo privileges to install the software system-wide (and not just locally on your account).
+
+<br>
+
+Go to the GitHub page for the program [snp-dists](https://github.com/tseemann/snp-dists), which we will use to calculate the number of SNPs between sequences.
+
+Click on the green 'Code' button and copy the link 'https://github.com/tseemann/snp-dists.git'
+
+In your terminal window type:
+
+	git clone https://github.com/tseemann/snp-dists.git
+	cd snp-dists
+	make
+
+* What did this do?
+
+> You should see that an executable called 'snp-dists' was compiled by the 'make' command.  Executables are conveniently 
+> colored green on our VM. We could move this to a place that's in our PATH (such as /usr/local/bin) so that we'd only have 
+> to type the `snp-dists` command when we want to run the program but this also requires sudo privileges 
+> (and the executable is already there so don't try this).  
+> Or we can simply point the VM to the location of our snp-dists program when we want to run it.
+
+<br>
+
+Copy your consensus genomes to the bucket.  Once everyone has copied their fasta files, copy all of them back to your VM.
+
+	gsutil cp IDRnumber.fa gs://wc-bms-bi-training-bucket/consensus_genomes
+	gsutil gs://wc-bms-bi-training-bucket/consensus_genomes/*fa .
+
+> Note that there was an additional fasta file in this bucket called 'additional_genomes.fa' that you have copied over.  
+> These are contextual sequences to help us determine whether the genomes from our investigation are linked.
+> The contextual sequences were collected from the same time period as our genomes, from the same or neighboring
+> counties as where our specimens were collected. These genomes were obtained from [GISAID](https://www.gisaid.org/),
+> which has become the global standard for depositing SARS-CoV-2 genomes and associated metadata.
+> 
+> Since you are copying all fasta files, the copy of your fasta file in your account will simply be overwritten.
+
+<br>
+
+Concatenate your files into a single multi-fasta file and align your genomes with [MAFFT](https://mafft.cbrc.jp/alignment/software/)
+
+	cat *fa > all.fasta
+	mafft all.fasta > all.aln.fasta
+	
+> If we had thousands of genomes to align, it would be more efficient to align each to a guide genome.
+
+	mafft --auto --keeplength --addfragments all.fasta wuhan.fna > all.aln.fasta
+
+<br>
+
+Reconstruct a phylogeny with your alignment 'all.aln.fasta' in IQTree.
+
+	iqtree -s all.aln.fasta -m GTR+G4
+	
+> [IQTree](http://www.iqtree.org/) is a program for rapidly generating a maximum likelihood (ML) tree for hundreds to thousands of sequences. There are several methods to reconstruct a phylogeny - Parsimony, Neighbor-Joining, Maximum Likelihood, and Bayesian. ML methods rely on models of nucleotide or amino acid substitution.  There are many models - from simple to complex - and ideally we would want to test them all to see which fit our data best.  This can also be done with IQTree (see documentation or help page). Theoretically, an ML program would test every single possible tree given our data and find the one that maximizes the likelihood that our evolutionary model generated the data. However, the number of trees to be tested becomes inordinately large as you increase the number of taxa in your tree. Thus, IQTree employs some shortcut methods (which we won't cover here) so as not to test every tree.
+
+> The `-s` option specifies the input alignment and the `-m` option specifies the model.  We are using the general-time-reversible (GTR) [susbtitution model](https://evomics.org/resources/substitution-models/nucleotide-substitution-models/) and a gamma distribution (G) with four rate categories to take into account that different positions may evolve at different rates.
+
+<br>
+
+View the phylogeny ('all.aln.fasta.treefile') with [FigTree](http://tree.bio.ed.ac.uk/software/figtree/) or [Seaview](http://doua.prabi.fr/software/seaview).
+
+> We'll download these programs to your computers and learn how to import tree files and associated metadata in class. 
+> We'll also demo how to download a file from your VM and the metadata file in the 'consensus_genomes' bucket from your GCP console to your computer.
+
+* Do you think these genomes are part of the same transmission chain?
+* Which cases does the phylogeny support as being linked or not linked?
+
+<br>
+
+Generate a SNP matrix from you final alignment with your installed version of `snp-dists`.
+
+	snp-dists/snp-dists all.aln.fasta > snp_matrix.txt
+	
+> Remember, since the `snp-dists` program isn't in a place that your VM looks to find executables, you have to specify the path to where your version is located. 
+
+A maxtrix is rather cumbersome to visualize.  Try the `-m` or molten option of `snp-dists`, which prints the pairwise genome comparisons as a tab delimited list.
+
+	snp-dists/snp-dists -m all.aln.fasta > snp_matrix.txt
+	
+* Parse this file to find your genomes of interest compared to each other. 
+* Parse this file to find the average SNP difference among your genomes and all genomes.
+* Does this help you reach a conclusion about whether these cases are linked? Why or why not?
 
 ## Extra: Redo the analysis above employing Dockerized versions of the software
 
