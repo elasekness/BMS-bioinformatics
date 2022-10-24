@@ -206,7 +206,7 @@ instructions for importing a count matrix. After we have imported are data into 
 	dds <- dds[rowSums(counts(dds)) >100, ]
 	dds <- DESeq(dds)
 	res <- results(dds, contrast=c("Condition", "treated", "control"))
-	write.table(dds, file='sa-bwa_deseq.txt', sep='\t')
+	write.table(res, file='sa-bwa_deseq.txt', sep='\t')
 
 > Here we are importing both our read count table and a table called ColData, which we must create.  This contains information on which columns in our read
 > count table are controls and which are treatments. Both of these are used to create the DESeq2 dataset 'dds.' Note that un-normalized read counts 
@@ -260,12 +260,14 @@ Quantify transcript expression.
 > The TSV files for each library will be in a subdirectory named by the basename of the file.  The `-l` option specifies the automatic detection of the 
 > library type.  The `--validateMappings` option is the recommended default.  It essentially checks that the mappings are plausible enough to be quantified.
 
-Combine read counts from each sf file and change the headers in `nano`.
+You can combine tpm or read counts from each sf file and change the headers in `nano` to gain a sense of how your treatments compare.
 
 	cd salmon_quant
 	paste */quant.sf | cut -f 1,5,10,15,20 > sa-salmon.countsR.txt
 	
 > **Note:** This file is also in our GCP bucket: gs://wc-bms-bi-training-bucket/rnaseq/readcounts
+
+Import your sf files and your column data into R and create a DESeq object.
 
 * Was this considerably faster and simpler than aligning with BWA?
 * Notice how we don't need additional steps to generate a BAM file and then extract read counts from it.
