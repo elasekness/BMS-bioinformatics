@@ -230,6 +230,7 @@ Perform a PCA to examine the quality of your replicates
 
 <br>
 
+
 ## Quantify transcripts with Salmon
 
 [Salmon](https://combine-lab.github.io/salmon/) is a 'wicked fast' program that allows the direct quantification of reads against a transcriptome (no need for SAM or BAM files).  Because we don't have a transcriptome (we did not perform a de-novo assembly of our reads), we'll use the coding sequences that we downloaded as a substitute.
@@ -274,14 +275,21 @@ You can combine tpm or read counts from each sf file and change the headers in `
 
 ## Perform a DESeq2 analysis with your Salmon output.
 
-We will now use our sf files from Salmon to perform a DESeq2 analysis. First we will import our data with a function from another library called 'tximport' and then we will create our DESeq object. Make sure to install 'tximport' if it is not already in your R library. Also make sure to specify the absolute paths to the sf files to be imported by 'tximport' and assign them meaningful names.
+We will now use our sf files from Salmon to perform a DESeq2 analysis. First we will import our data with a function from another library called 'tximport' and then we will create our DESeq object. Make sure to install 'tximport' if it is not already in your R library. Also make sure to specify the absolute paths to the sf files to be imported by 'tximport' and assign them meaningful names. The names and order of import should match the row names and order in your ColData file:
+|  | Condition |
+| --- | ------------ |
+| treated2 | treated |
+| control2 | control |
+| treated1 | treated |
+| control1 | control |
 
 	R
 	library(DESeq2)
 	install.packages("tximport")
 	library(tximport)
 	files = file.path(c("SRR12830230/quant.sf", "SRR12830233/quant.sf", "SRR12830234/quant.sf", "SRR12830237/quant.sf"))
-	names(files) <- c(
+	names(files) <- c("treated2", "control2", "treated2", "control1")
+	tximport(files, 'salmon', txOut=TRUE)
 	
 
 * Are the number of DEGs the same between the BWA method and Salmon?
