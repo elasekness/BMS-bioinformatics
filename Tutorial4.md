@@ -278,20 +278,22 @@ You can combine tpm or read counts from each sf file and change the headers in `
 We will now use our sf files from Salmon to perform a DESeq2 analysis. First we will import our data with a function from another library called 'tximport' and then we will create our DESeq object. Make sure to install 'tximport' if it is not already in your R library. Also make sure to specify the absolute paths to the sf files to be imported by 'tximport' and assign them meaningful names. The names and order of import should match the row names and order in your ColData file:
 |  | Condition |
 | --- | ------------ |
-| treated2 | treated |
-| control2 | control |
-| treated1 | treated |
-| control1 | control |
+| cont1 | control |
+| cont2 | control |
+| dap1 | treated |
+| dap2 | treated |
 
 	R
 	library(DESeq2)
-	install.packages("tximport")
+	BiocManager::install("tximport")
 	library(tximport)
-	files = file.path(c("SRR12830230/quant.sf", "SRR12830233/quant.sf", "SRR12830234/quant.sf", "SRR12830237/quant.sf"))
-	names(files) <- c("treated2", "control2", "treated2", "control1")
-	tximport(files, 'salmon', txOut=TRUE)
+	files = file.path(c("cont1/quant.sf", "cont2/quant.sf", "dap1/quant.sf", "dap2/quant.sf"))
+	names(files) <- c("cont1", "cont2", "dap1", "dap2")
+	txi = tximport(files, 'salmon', txOut=TRUE)
+	dds = DESeqDataSetFromTximport(txi, df, ~Condition)
 	
-
+Once you've created your dds object, you can proceed with the DE analysis as before.
+	
 * Are the number of DEGs the same between the BWA method and Salmon?
 * Did they find similar read counts for your coding sequences?
 * Are the DE genesets the same?
