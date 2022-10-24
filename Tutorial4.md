@@ -141,7 +141,7 @@ Copy the genome assembly and annotation files to your VM. We'll also want the co
 	bwa index sa.fna 
 	for filn in `cat seqlist`; do bwa mem sa.fna $filn"_1_val_1.fq" $filn"_2_val_2.fq" | samtools sort | samtools view -F 4 -o $filn".sorted.bam"; done
 	
-> We are decompressing our assebmly and annotation file, copying the assembly file to a shorter name, indexing it for `bwa`, running `bwa` to map our reads, 
+> We are decompressing our assembly and annotation file, copying the assembly file to a shorter name, indexing it for `bwa`, running `bwa` to map our reads, 
 > then using `samtools` to sort our alignment and convert it to bam format, while only including reads that aligned to our reference genome.
 > **Note:** BAM alignments are also located in our GCP bucket: wc-bms-bi-training-bucket/rnaseq/bams
 
@@ -267,14 +267,22 @@ You can combine tpm or read counts from each sf file and change the headers in `
 	
 > **Note:** This file is also in our GCP bucket: gs://wc-bms-bi-training-bucket/rnaseq/readcounts
 
-Import your sf files and your column data into R and create a DESeq object.
-
 * Was this considerably faster and simpler than aligning with BWA?
 * Notice how we don't need additional steps to generate a BAM file and then extract read counts from it.
 * Look at the TSV files for your libraries (salmon_quant/basename/quant.sf).  You are given both TPM (Transcripts Per Million) and raw read count quantifications.
 * The multiBamCov command allows you to put readcounts from multiple bam files into the same file but Salmon outputs these to separate files.
 
-## Perform a DESeq2 analysis with your Salmon-quantified reads
+## Perform a DESeq2 analysis with your Salmon output.
+
+We will now use our sf files from Salmon to perform a DESeq2 analysis. First we will import our data with a function from another library called 'tximport' and then we will create our DESeq object. Make sure to install 'tximport' if it is not already in your R library. Also make sure to specify the absolute paths to the sf files to be imported by 'tximport' and assign them meaningful names.
+
+	R
+	library(DESeq2)
+	install.packages("tximport")
+	library(tximport)
+	files = file.path(c("SRR12830230/quant.sf", "SRR12830233/quant.sf", "SRR12830234/quant.sf", "SRR12830237/quant.sf"))
+	names(files) <- c(
+	
 
 * Are the number of DEGs the same between the BWA method and Salmon?
 * Did they find similar read counts for your coding sequences?
