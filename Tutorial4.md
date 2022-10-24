@@ -290,6 +290,7 @@ We will now use our sf files from Salmon to perform a DESeq2 analysis. First we 
 	files = file.path(c("cont1/quant.sf", "cont2/quant.sf", "dap1/quant.sf", "dap2/quant.sf"))
 	names(files) <- c("cont1", "cont2", "dap1", "dap2")
 	txi = tximport(files, 'salmon', txOut=TRUE)
+	ColData = read.table("ColData.txt", header=T, sep="\t", row.names=1)
 	dds = DESeqDataSetFromTximport(txi, df, ~Condition)
 	
 Once you've created your dds object, you can proceed with the DE analysis as before.
