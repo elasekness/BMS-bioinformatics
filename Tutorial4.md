@@ -275,7 +275,7 @@ You can combine tpm or read counts from each sf file and change the headers in `
 
 ## Perform a DESeq2 analysis with your Salmon output.
 
-We will now use our sf files from Salmon to perform a DESeq2 analysis. First we will import our data with a function from another library called 'tximport' and then we will create our DESeq object. Make sure to install 'tximport' if it is not already in your R library. Also make sure to specify the absolute paths to the sf files to be imported by 'tximport' and assign them meaningful names. The names and order of import should match the row names and order in your ColData file:
+We will now use our sf files from Salmon to perform a DESeq2 analysis. First we will import our data with a function from another library called 'tximport' and then we will create our DESeq object. Make sure to install 'tximport' if it is not already in your R library. Also make sure to specify the absolute paths to the sf files to be imported by 'tximport' and assign them meaningful names. The names and order of import should match the row names and order in your ColData.txt file:
 |  | Condition |
 | --- | ------------ |
 | cont1 | control |
@@ -291,7 +291,7 @@ We will now use our sf files from Salmon to perform a DESeq2 analysis. First we 
 	names(files) <- c("cont1", "cont2", "dap1", "dap2")
 	txi = tximport(files, 'salmon', txOut=TRUE)
 	ColData = read.table("ColData.txt", header=T, sep="\t", row.names=1)
-	dds = DESeqDataSetFromTximport(txi, df, ~Condition)
+	dds = DESeqDataSetFromTximport(txi, ColData, ~Condition)
 	
 Once you've created your dds object, you can proceed with the DE analysis as before.
 	
