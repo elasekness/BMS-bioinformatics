@@ -495,6 +495,7 @@ The file returned to us by our datasets command is compressed (zipped). Decompre
 > The output of this commmand needs to be manipulated so that a single amino acid is on each line. This is the trickiest part of the exercise but not so difficult if we verbalize what we want to do: every amino acid must be separated by a newline ("\n") character.
 > 
 > Lines that look like this ACDEFG will now look like this:
+> 
 > A
 > 
 > C
