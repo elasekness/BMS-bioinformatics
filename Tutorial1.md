@@ -266,7 +266,7 @@ Finally, probably the easiest and fastest way to download the Wuhan-1 genome dir
 
 	datasets download virus genome accession NC_045512.2
 
-What is the file and filetype returned to you?
+
 As you can see, there are usually multiple ways to solve a problem in bioinformatics.
 
 <br>
@@ -446,6 +446,7 @@ Count the number of occurrences of **`CDS`** there are in the third field of the
 Bash for loops are basically little shell scripts that you are executing from the command line (Bash is a type of shell, and shells are basically
 little programs for interpreting your commands). Like all loops, they allow you to automate iterative processes.
 For example, instead of opening 200 hundred fasta files and manually changing the definition lines in each,
+
 I can run a for loop that will open each fasta file and make the changes that I specify.
 
 The basic syntax is:
@@ -475,6 +476,21 @@ Metacharacters have a special meaning and include:
 
 Usually, we escape special characters with a backslash to interpret them literally.
 
+<br>
+
+## Exercise to complete on your own or with a friend :)
+
+The file returned to us by our datasets command is compressed (zipped). Decompressing the file with the **`unzip`** command gives us a directory. Within that directory is a subdirectory so that the files you want are here: $HOME/ncbi_dataset/data.
+
+1. Make a new directory called 'exercises' in your home directory and move the coding sequence file, the genome file, and the protein file (cds.fna, genome.fna, and protein.faa, respectively) to it by issuing a single command (i.e use a single command that moves all files at once, not three separate commands).
+
+2. Add a prefix to each file name ("wuhan_") so that the file names are less ambiguous.
+
+3. Determine the amino acid composition of the Wuhan-1 proteome by manipulating the protein.faa file (now renamed wuhan_protein.faa). Specifically, tally each single-letter amino acid code (i.e. the total number of A's C's, D's, etc). This will require piping as well as several of the commands we just learned (**`grep`**, **`sed`**, etc).
+
+> Break this task down into steps. 
+> First, get the amino acid sequences from all proteins in the faa file by excluding the sequence names. You should see that there are many lines with strings of amino acids of varying lengths.
+> The output of this commmand needs to be manipulated so that a single amino acid is on each line. This is the trickiest part of the exercise but not so difficult if we verbalize what we want to do: every amino acid must be separated by a newline ("\n") character so that 
 
 
 ## Some good references for additional clarification and practice:
