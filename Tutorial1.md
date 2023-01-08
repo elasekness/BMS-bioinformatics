@@ -488,18 +488,28 @@ The file returned to us by our datasets command is compressed (zipped). Decompre
 
 3. Determine the amino acid composition of the Wuhan-1 proteome by manipulating the protein.faa file (now renamed wuhan_protein.faa). Specifically, tally each single-letter amino acid code (i.e. the total number of A's C's, D's, etc). This will require piping as well as several of the commands we just learned (**`grep`**, **`sed`**, etc).
 
-> Break this task down into steps. 
+> Break this task down into steps.
+>  
 > First, get the amino acid sequences from all proteins in the faa file by excluding the sequence names. You should see that there are many lines with strings of amino acids of varying lengths.
+> 
 > The output of this commmand needs to be manipulated so that a single amino acid is on each line. This is the trickiest part of the exercise but not so difficult if we verbalize what we want to do: every amino acid must be separated by a newline ("\n") character.
-> Lines that looked like this "ACDEFG" will now look like this:
+> 
+> Lines that look like this ACDEFG will now look like this:
 > A
+> 
 > C
+> 
 > D
+> 
 > E
+> 
 > F
+> 
 > G
-> This will require regular expressions and a **`sed`** command. The sed command should have a way of specifying a range of letters that will
+> 
+> You will need to use regular expressions and a **`sed`** command. The sed command should have a way of specifying a range of letters that will
 be followed by a newline character. While I want you to try constructing the sed command, I don't want you to spend too much time on it so the answer is given here: [sed command](https://github.com/elasekness/BMS-bioinformatics/blob/main/Answers).
+>
 > After you have this part of your multipart command, you need a way of binning amino acids and counting them. This should be relatively easy if you remember the command combination we learned earlier.
 
 <br>
