@@ -262,12 +262,12 @@ Alternatively, we could select Assembly from the drop down menu and search for S
 A new feature of the NCBI site is the Taxonomy page.  A link to this page can now be found on the Genome results page.  Clicking this link for SARS-CoV-2 will bring you to the Taxonomy page for the reference genome, which happens to be Wuhan-1. You can download the assembly files you want from here asa well.
 
 
-Finally, probably the easiest and fastest way to download the Wuhan-1 genome directly to your VM is to use NCBI's **`datasets`** command-line tool. This tool has already been installed for you. A help menu will appear if you type **`datasets`** without any arguments.  We want to download a dataset so we will use this function.  Typing **`datasets download`** will give you additional information on how to use this command.  Let's try downloading the Wuhan-1 assembly (aceesion number must be RefSeq).
+Finally, probably the easiest and fastest way to download the Wuhan-1 genome directly to your VM is to use NCBI's **`datasets`** command-line tool. This tool has already been installed for you. A help menu will appear if you type **`datasets`** without any arguments.  We want to download a dataset so we will use this function.  Typing **`datasets download`** will give you additional information on how to use this command as will **`datasets downnload virus`**.  Let's try downloading the Wuhan-1 assembly (accession number must be RefSeq).
 
 	datasets download virus genome accession NC_045512.2
 
-> What is the file and filetype returned to you?
-> As you can see, there are usual multiple ways to solve a problem in bioinformatics.
+What is the file and filetype returned to you?
+As you can see, there are usually multiple ways to solve a problem in bioinformatics.
 
 <br>
 
