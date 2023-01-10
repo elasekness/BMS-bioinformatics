@@ -127,6 +127,7 @@ Each student will map the fastqs from one sample to the reference genome and gen
 | Student3 | 2020-03-15 | IDR3 | Westchester | Yes, resident |
 | Student4 | 2020-03-15 | IDR4 | Westchester | Yes, resident |
 | Student5 | 2020-03-19 | IDR5 | Westchester | Yes, resident |
+| Student6 | 2020-03-31 | IDR6 | Unknown | Unknown |
 
 
 
