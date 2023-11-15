@@ -218,7 +218,7 @@ You might want to explore each of these to familiarize yourself with the resourc
 We will focus on NCBI.  Our goal is to download a reference genome (Wuhan-1) for SARS-CoV-2,
 which we will use later to perform a reference-based assembly and an outbreak analysis.
 We will also want to download the accompanying annotation file (gff file), which provides a description of the genes,
-the function of the coding sequences, and the nucleotide positions of the genes in the genome and the translated coding sequences (faa file).
+the function of the coding sequences, and the nucleotide positions of the genes in the genome, and the translated coding sequences (faa file).
 
 
 Navigate to NCBI’s homepage: [https://www.ncbi.nlm.nih.gov/](https://www.ncbi.nlm.nih.gov/)
@@ -355,7 +355,7 @@ Use a 'for loop' to decompress all of your files at once:
 Count how many coding sequences are present in your faa file.
 
 
-	grep -c GCF_009858895.2_ASM985889v3_protein.faa
+	grep -c ">" GCF_009858895.2_ASM985889v3_protein.faa
 
 > **`grep`** = global regular expression print.  Grep searches a file line-by-line for patterns that you specify and returns every line containing that pattern.
 > The **`-c`** option counts the number of lines that contain the search pattern instead of returning the lines.
