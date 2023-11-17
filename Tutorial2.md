@@ -375,17 +375,15 @@ the compiled software.  To indicate that the Docker image should use the output 
 
 ## Docker
 
-A Docker container image is essentially like a little VM that contains code for an application and all of its dependencies.
+A Docker container is essentially like a little VM that contains code for an application and all of its dependencies.
 Thus, Docker containers should run the same way on any Linux machine. This is valuable because software is often
 difficult to compile from source code.  Docker containers also eliminate issues with versioning, such that you can
-have and run docker containers of multiple versions of the same program without issue. Conveniently, Docker has already
-been installed for us on our machines.
+have and run docker containers of multiple versions of the same program. Conveniently, Docker has already
+been installed for us on our machines. A docker image is the instructions for making the container. The image creates the container.
 
 Docker images can be 'pulled' from repositories on [Docker hub](https://hub.docker.com/) 
 Anyone with a Docker account can create a repository for software that they have containerized.
 Two repositories that I pull from frequently are [staphb](https://github.com/StaPH-B/docker-builds) and 'biocontainers.'
-Although I'm using the terms Docker image and Docker container synonymously, an image is really the instructions for making the container. The image
-creates the VM instance.
 
 Two commands that you will use are **`docker pull`** and **`docker run`**
 
@@ -399,8 +397,7 @@ The **`docker run`** command will:
 * execute specified command
 <br>
 The docker run command essentially converts our image to a container.  To actually execute our command
-on our files, we need to make them visible to the container.  Thus, we must mount a working directory inside the VM.  To do this, we
-will use two arguments with our run command:
+on our files, we need to make them visible to the container.  Thus, we must mount a working directory inside the VM. To do this, we will use two arguments with our run command:
 
 **`-v $(pwd):/data`** mounts our current directory to the VM (it will also create a directory called 'data' if it doesn't exist).
 **`-w /data`** allows the command being executed to run in the directory specified.
